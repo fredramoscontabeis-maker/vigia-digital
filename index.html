@@ -1,0 +1,540 @@
+ (cd "$(git rev-parse --show-toplevel)" && git apply --3way <<'EOF' 
+diff --git a/index.html b/index.html
+new file mode 100644
+index 0000000000000000000000000000000000000000..edc82c3e699c29e53a12ec416c99dca1c1e1b3a2
+--- /dev/null
++++ b/index.html
+@@ -0,0 +1,530 @@
++<!DOCTYPE html>
++<html lang="pt-BR">
++<head>
++  <meta charset="UTF-8" />
++  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
++  <title>Vigia Digital | Assistente de Segurança via WhatsApp</title>
++  <meta name="description" content="Analise mensagens, prints e boletos suspeitos em segundos com o Vigia Digital no WhatsApp." />
++
++  <!-- Google Fonts permitidas no projeto -->
++  <link rel="preconnect" href="https://fonts.googleapis.com" />
++  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
++  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
++
++  <style>
++    :root {
++      --bg: #0d1b2a;
++      --surface: #12263a;
++      --text: #ffffff;
++      --muted: #dbe3eb;
++      --accent: #e94560;
++      --success: #25d366;
++      --border: rgba(255, 255, 255, 0.14);
++      --shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
++      --radius: 16px;
++      --max: 1120px;
++    }
++
++    * {
++      box-sizing: border-box;
++      margin: 0;
++      padding: 0;
++    }
++
++    body {
++      font-family: "Inter", system-ui, -apple-system, sans-serif;
++      background: linear-gradient(180deg, #0d1b2a 0%, #11263b 40%, #0d1b2a 100%);
++      color: var(--text);
++      line-height: 1.6;
++    }
++
++    img,
++    svg {
++      display: block;
++      max-width: 100%;
++    }
++
++    a {
++      color: inherit;
++      text-decoration: none;
++    }
++
++    .container {
++      width: min(92%, var(--max));
++      margin-inline: auto;
++    }
++
++    /* Header */
++    header {
++      position: sticky;
++      top: 0;
++      z-index: 100;
++      backdrop-filter: blur(8px);
++      background: rgba(13, 27, 42, 0.85);
++      border-bottom: 1px solid var(--border);
++    }
++
++    .nav {
++      min-height: 76px;
++      display: flex;
++      justify-content: space-between;
++      align-items: center;
++      gap: 1.2rem;
++    }
++
++    .logo {
++      font-family: "Sora", sans-serif;
++      font-weight: 800;
++      letter-spacing: 0.4px;
++      font-size: 1.5rem;
++    }
++
++    .logo span {
++      color: var(--accent);
++    }
++
++    nav ul {
++      list-style: none;
++      display: flex;
++      gap: 1.1rem;
++      color: var(--muted);
++      font-weight: 500;
++      flex-wrap: wrap;
++      justify-content: flex-end;
++    }
++
++    nav a:hover {
++      color: #fff;
++    }
++
++    section {
++      padding: 5rem 0;
++    }
++
++    h1,
++    h2,
++    h3 {
++      font-family: "Sora", sans-serif;
++      line-height: 1.2;
++    }
++
++    .hero {
++      padding-top: 4.5rem;
++    }
++
++    .hero-grid {
++      display: grid;
++      grid-template-columns: 1.1fr 0.9fr;
++      gap: 2.2rem;
++      align-items: center;
++    }
++
++    .eyebrow {
++      display: inline-flex;
++      align-items: center;
++      gap: 0.5rem;
++      background: rgba(233, 69, 96, 0.14);
++      border: 1px solid rgba(233, 69, 96, 0.35);
++      color: #ffdce3;
++      padding: 0.35rem 0.8rem;
++      border-radius: 999px;
++      font-size: 0.85rem;
++      margin-bottom: 1rem;
++    }
++
++    h1 {
++      font-size: clamp(2rem, 4vw, 3.2rem);
++      margin-bottom: 0.9rem;
++    }
++
++    .hero p {
++      color: var(--muted);
++      font-size: clamp(1rem, 2vw, 1.14rem);
++      max-width: 52ch;
++      margin-bottom: 1.6rem;
++    }
++
++    .btn {
++      display: inline-flex;
++      align-items: center;
++      justify-content: center;
++      font-weight: 700;
++      border-radius: 12px;
++      border: 0;
++      cursor: pointer;
++      padding: 0.95rem 1.4rem;
++      transition: transform 0.2s ease, box-shadow 0.2s ease;
++    }
++
++    .btn:hover {
++      transform: translateY(-2px);
++    }
++
++    .btn-whatsapp {
++      background: var(--success);
++      color: #05220f;
++      box-shadow: 0 12px 26px rgba(37, 211, 102, 0.35);
++    }
++
++    /* Mockup de análise */
++    .analysis-card {
++      background: linear-gradient(180deg, #17314a 0%, #102338 100%);
++      border: 1px solid var(--border);
++      border-radius: var(--radius);
++      box-shadow: var(--shadow);
++      overflow: hidden;
++    }
++
++    .analysis-head {
++      padding: 1rem 1.2rem;
++      border-bottom: 1px solid var(--border);
++      display: flex;
++      justify-content: space-between;
++      align-items: center;
++      color: var(--muted);
++      font-size: 0.92rem;
++    }
++
++    .analysis-body {
++      padding: 1.2rem;
++      display: grid;
++      gap: 1rem;
++    }
++
++    .risk-badge {
++      background: rgba(233, 69, 96, 0.18);
++      border: 1px solid rgba(233, 69, 96, 0.5);
++      color: #ffd5dc;
++      border-radius: 12px;
++      padding: 1rem;
++      font-weight: 700;
++      display: grid;
++      gap: 0.4rem;
++    }
++
++    .risk-badge strong {
++      font-family: "Sora", sans-serif;
++      font-size: 1.2rem;
++      color: #fff;
++    }
++
++    .list {
++      list-style: none;
++      display: grid;
++      gap: 0.7rem;
++      color: var(--muted);
++      font-size: 0.95rem;
++    }
++
++    .list li {
++      padding-left: 1.4rem;
++      position: relative;
++    }
++
++    .list li::before {
++      content: "•";
++      color: var(--accent);
++      position: absolute;
++      left: 0.3rem;
++    }
++
++    .recommendation {
++      background: rgba(255, 255, 255, 0.07);
++      border: 1px solid var(--border);
++      border-radius: 12px;
++      padding: 0.85rem;
++      font-size: 0.93rem;
++      color: #edf4fb;
++    }
++
++    .section-title {
++      text-align: center;
++      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
++      margin-bottom: 2rem;
++    }
++
++    .grid-3 {
++      display: grid;
++      grid-template-columns: repeat(3, 1fr);
++      gap: 1rem;
++    }
++
++    .card {
++      background: rgba(255, 255, 255, 0.04);
++      border: 1px solid var(--border);
++      border-radius: var(--radius);
++      padding: 1.2rem;
++    }
++
++    .step-num {
++      width: 36px;
++      height: 36px;
++      border-radius: 50%;
++      display: grid;
++      place-items: center;
++      background: var(--accent);
++      font-weight: 700;
++      margin-bottom: 0.8rem;
++    }
++
++    .card h3 {
++      margin-bottom: 0.5rem;
++      font-size: 1.1rem;
++    }
++
++    .card p {
++      color: var(--muted);
++      font-size: 0.95rem;
++    }
++
++    .plan {
++      position: relative;
++      display: grid;
++      gap: 0.5rem;
++    }
++
++    .price {
++      font-family: "Sora", sans-serif;
++      font-size: 1.8rem;
++    }
++
++    .plan small {
++      color: var(--muted);
++    }
++
++    .badge-recom {
++      position: absolute;
++      top: -12px;
++      right: 12px;
++      background: var(--accent);
++      border-radius: 999px;
++      padding: 0.25rem 0.65rem;
++      font-size: 0.72rem;
++      font-weight: 700;
++    }
++
++    .plan.recommended {
++      border-color: rgba(233, 69, 96, 0.65);
++      box-shadow: 0 12px 34px rgba(233, 69, 96, 0.22);
++      transform: translateY(-3px);
++    }
++
++    footer {
++      border-top: 1px solid var(--border);
++      padding: 1.7rem 0;
++      color: var(--muted);
++      text-align: center;
++      font-size: 0.92rem;
++    }
++
++    /* Animação de entrada ao rolar */
++    .reveal {
++      opacity: 0;
++      transform: translateY(24px);
++      transition: opacity 0.7s ease, transform 0.7s ease;
++      will-change: opacity, transform;
++    }
++
++    .reveal.show {
++      opacity: 1;
++      transform: translateY(0);
++    }
++
++    @media (max-width: 960px) {
++      .hero-grid {
++        grid-template-columns: 1fr;
++      }
++
++      .grid-3 {
++        grid-template-columns: 1fr;
++      }
++
++      nav ul {
++        gap: 0.8rem;
++        font-size: 0.92rem;
++      }
++    }
++
++    @media (max-width: 560px) {
++      section {
++        padding: 4rem 0;
++      }
++
++      .nav {
++        min-height: 70px;
++        flex-direction: column;
++        justify-content: center;
++        padding: 0.6rem 0;
++      }
++
++      nav ul {
++        justify-content: center;
++      }
++    }
++  </style>
++</head>
++<body>
++  <!-- 1) HEADER -->
++  <header>
++    <div class="container nav">
++      <a href="#top" class="logo">Vigia<span>Digital</span></a>
++      <nav aria-label="Navegação principal">
++        <ul>
++          <li><a href="#como-funciona">Como funciona</a></li>
++          <li><a href="#analises">Análises</a></li>
++          <li><a href="#planos">Planos</a></li>
++          <li><a href="#depoimentos">Depoimentos</a></li>
++        </ul>
++      </nav>
++    </div>
++  </header>
++
++  <main id="top">
++    <!-- 2) HERO -->
++    <section class="hero">
++      <div class="container hero-grid">
++        <div class="reveal">
++          <span class="eyebrow">🛡️ Segurança digital para o dia a dia</span>
++          <h1>Antes de pagar ou clicar, manda aqui.</h1>
++          <p>Análise de risco em segundos, direto no seu WhatsApp.</p>
++          <a href="#" class="btn btn-whatsapp" aria-label="Testar Vigia Digital grátis agora">Testar grátis agora</a>
++        </div>
++
++        <article class="analysis-card reveal" aria-label="Exemplo de análise do Vigia Digital">
++          <div class="analysis-head">
++            <span>WhatsApp • Vigia Digital</span>
++            <span>Agora</span>
++          </div>
++          <div class="analysis-body">
++            <div class="risk-badge">
++              <span>🔴 RISCO ALTO — 78%</span>
++              <strong>Possível tentativa de golpe</strong>
++            </div>
++            <ul class="list">
++              <li>Link encurtado direcionando para página não oficial.</li>
++              <li>Urgência exagerada para pagamento imediato.</li>
++              <li>Pedido de dados sensíveis fora de canal seguro.</li>
++            </ul>
++            <div class="recommendation">
++              <strong>Recomendação:</strong> não clique, não pague agora e confirme com o canal oficial da empresa.
++            </div>
++          </div>
++        </article>
++      </div>
++    </section>
++
++    <!-- 3) COMO FUNCIONA -->
++    <section id="como-funciona">
++      <div class="container">
++        <h2 class="section-title reveal">Como funciona</h2>
++        <div class="grid-3">
++          <article class="card reveal">
++            <div class="step-num">1</div>
++            <h3>Você recebe algo suspeito</h3>
++            <p>Mensagem, boleto ou print que levantou dúvida.</p>
++          </article>
++          <article class="card reveal">
++            <div class="step-num">2</div>
++            <h3>Encaminha para o Vigia</h3>
++            <p>Envie no WhatsApp como mensagem, imagem ou arquivo.</p>
++          </article>
++          <article class="card reveal">
++            <div class="step-num">3</div>
++            <h3>Recebe análise em segundos</h3>
++            <p>Você recebe nível de risco, sinais detectados e orientação.</p>
++          </article>
++        </div>
++      </div>
++    </section>
++
++    <!-- 4) O QUE ANALISAMOS -->
++    <section id="analises">
++      <div class="container">
++        <h2 class="section-title reveal">O que analisamos</h2>
++        <div class="grid-3">
++          <article class="card reveal">
++            <h3>💬 Mensagens de WhatsApp e SMS</h3>
++            <p>Análise de linguagem suspeita, links e pedidos incomuns.</p>
++          </article>
++          <article class="card reveal">
++            <h3>📄 Boletos bancários</h3>
++            <p>Validação de indícios de fraude antes do pagamento.</p>
++          </article>
++          <article class="card reveal">
++            <h3>🖼️ Prints de telas suspeitas</h3>
++            <p>Detecção de sinais visuais que indicam golpe ou phishing.</p>
++          </article>
++        </div>
++      </div>
++    </section>
++
++    <!-- 5) PLANOS -->
++    <section id="planos">
++      <div class="container">
++        <h2 class="section-title reveal">Planos</h2>
++        <div class="grid-3">
++          <article class="card plan reveal">
++            <h3>Gratuito</h3>
++            <p class="price">R$ 0</p>
++            <small>3 análises/mês</small>
++          </article>
++          <article class="card plan reveal">
++            <h3>Essencial</h3>
++            <p class="price">R$ 14,90/mês</p>
++            <small>Ilimitado</small>
++          </article>
++          <article class="card plan recommended reveal">
++            <span class="badge-recom">Recomendado</span>
++            <h3>Família</h3>
++            <p class="price">R$ 24,90/mês</p>
++            <small>Até 4 números</small>
++          </article>
++        </div>
++      </div>
++    </section>
++
++    <!-- 6) DEPOIMENTOS -->
++    <section id="depoimentos">
++      <div class="container">
++        <h2 class="section-title reveal">Depoimentos</h2>
++        <div class="grid-3" style="grid-template-columns: repeat(2, 1fr);">
++          <article class="card reveal">
++            <p>“Eu ia pagar um boleto falso de uma compra online. O Vigia apontou o risco alto e me evitou um prejuízo.”</p>
++            <strong style="display:block; margin-top:0.8rem;">— Carla M., Recife</strong>
++          </article>
++          <article class="card reveal">
++            <p>“Meu pai quase clicou num link de falsa atualização bancária. Encaminhamos e recebemos a análise em segundos.”</p>
++            <strong style="display:block; margin-top:0.8rem;">— Rodrigo S., Campinas</strong>
++          </article>
++        </div>
++      </div>
++    </section>
++  </main>
++
++  <!-- 7) FOOTER -->
++  <footer>
++    <div class="container">
++      Análise educativa. Não substitui orientação profissional.
++    </div>
++  </footer>
++
++  <script>
++    // Animações suaves ao rolar a página usando IntersectionObserver
++    const reveals = document.querySelectorAll('.reveal');
++
++    const observer = new IntersectionObserver((entries) => {
++      entries.forEach((entry) => {
++        if (entry.isIntersecting) {
++          entry.target.classList.add('show');
++          observer.unobserve(entry.target);
++        }
++      });
++    }, {
++      threshold: 0.15,
++      rootMargin: '0px 0px -40px 0px'
++    });
++
++    reveals.forEach((element) => observer.observe(element));
++  </script>
++</body>
++</html>
+ 
+EOF
+)
