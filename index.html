@@ -1,193 +1,730 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Vigia Digital | Proteção contra golpes no WhatsApp</title>
-  <meta name="description" content="Antes de pagar ou clicar, mande para o Vigia. Análise rápida de mensagens, boletos e links suspeitos direto no WhatsApp." />
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+ <title>Vigia Digital | Proteção contra golpes pelo WhatsApp</title>
+ <meta name="description" content="Golpes estão cada vez mais convincentes. Antes de pagar ou clicar, envie mensagem, print, link ou boleto suspeito pelo WhatsApp e receba uma análise simples de sinais de risco." />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+ <link rel="preconnect" href="https://fonts.googleapis.com" />
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 
-  <style>
-    :root {
-      --bg: #0d1b2a;
-      --surface: #12263a;
-      --text: #ffffff;
-      --muted: #dbe3eb;
-      --accent: #e94560;
-      --success: #25d366;
-      --border: rgba(255,255,255,0.14);
-      --radius: 16px;
-      --shadow: 0 20px 45px rgba(0,0,0,0.28);
-      --max: 1120px;
-    }
+ <style>
+   :root {
+     --bg: #0d1b2a;
+     --surface: #12263a;
+     --text: #ffffff;
+     --muted: #dbe3eb;
+     --accent: #e94560;
+     --success: #25d366;
+     --border: rgba(255, 255, 255, 0.14);
+     --shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+     --radius: 16px;
+     --max: 1120px;
+   }
 
-    * { box-sizing:border-box; margin:0; padding:0; }
-    body {
-      font-family:"Inter",sans-serif;
-      background:linear-gradient(180deg,#0d1b2a,#11263b);
-      color:var(--text);
-      line-height:1.6;
-    }
+   * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .container { width:min(92%,var(--max)); margin:auto; }
+   body {
+     font-family: "Inter", system-ui, -apple-system, sans-serif;
+     background: linear-gradient(180deg, #0d1b2a 0%, #11263b 40%, #0d1b2a 100%);
+     color: var(--text);
+     line-height: 1.6;
+   }
 
-    header {
-      position:sticky; top:0; backdrop-filter:blur(8px);
-      background:rgba(13,27,42,0.9);
-      border-bottom:1px solid var(--border);
-    }
+   img, svg { display: block; max-width: 100%; }
+   a { color: inherit; text-decoration: none; }
 
-    .nav { display:flex; justify-content:space-between; align-items:center; min-height:70px; }
-    .logo { font-family:"Sora"; font-weight:800; font-size:1.4rem; }
-    .logo span { color:var(--accent); }
+   .container {
+     width: min(92%, var(--max));
+     margin-inline: auto;
+   }
 
-    section { padding:4.5rem 0; }
+   header {
+     position: sticky;
+     top: 0;
+     z-index: 100;
+     backdrop-filter: blur(8px);
+     background: rgba(13, 27, 42, 0.85);
+     border-bottom: 1px solid var(--border);
+   }
 
-    h1 { font-family:"Sora"; font-size:clamp(2.2rem,4vw,3rem); margin-bottom:1rem; }
-    h2 { font-family:"Sora"; font-size:1.8rem; text-align:center; margin-bottom:2rem; }
+   .nav {
+     min-height: 76px;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     gap: 1.2rem;
+   }
 
-    .hero-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; align-items:center; }
+   .logo {
+     display: flex;
+     align-items: center;
+     gap: 0.55rem;
+     font-family: "Sora", sans-serif;
+     font-weight: 800;
+     letter-spacing: 0.4px;
+     font-size: 1.5rem;
+   }
+   .logo span { color: var(--accent); }
+   .logo-icon { width: 36px; height: 36px; flex-shrink: 0; }
 
-    .hero p { color:var(--muted); margin-bottom:1.4rem; }
+   nav ul {
+     list-style: none;
+     display: flex;
+     gap: 1.1rem;
+     color: var(--muted);
+     font-weight: 500;
+     flex-wrap: wrap;
+     justify-content: flex-end;
+   }
+   nav a:hover { color: #fff; }
 
-    .btn {
-      display:inline-block;
-      background:var(--success);
-      color:#05220f;
-      padding:1rem 1.6rem;
-      border-radius:12px;
-      font-weight:700;
-      text-decoration:none;
-    }
+   .hamburger {
+     display: none;
+     flex-direction: column;
+     justify-content: center;
+     gap: 5px;
+     background: none;
+     border: none;
+     cursor: pointer;
+     padding: 6px;
+     border-radius: 8px;
+     transition: background 0.2s;
+   }
+   .hamburger:hover { background: rgba(255,255,255,0.07); }
+   .hamburger span {
+     display: block;
+     width: 24px;
+     height: 2px;
+     background: var(--text);
+     border-radius: 2px;
+     transition: transform 0.3s ease, opacity 0.3s ease;
+   }
+   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+   .hamburger.open span:nth-child(2) { opacity: 0; }
+   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    .card {
-      background:var(--surface);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:1.2rem;
-    }
+   .mobile-nav {
+     display: none;
+     flex-direction: column;
+     gap: 0;
+     overflow: hidden;
+     max-height: 0;
+     transition: max-height 0.4s ease;
+     background: rgba(13, 27, 42, 0.97);
+     border-top: 1px solid var(--border);
+   }
+   .mobile-nav.open { max-height: 320px; }
+   .mobile-nav a {
+     display: block;
+     padding: 1rem 1.2rem;
+     color: var(--muted);
+     font-weight: 500;
+     border-bottom: 1px solid var(--border);
+     transition: background 0.2s, color 0.2s;
+   }
+   .mobile-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
 
-    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+   section { padding: 5rem 0; }
+   h1, h2, h3 { font-family: "Sora", sans-serif; line-height: 1.2; }
 
-    .highlight {
-      background:rgba(233,69,96,0.1);
-      border:1px solid rgba(233,69,96,0.3);
-      padding:1rem;
-      border-radius:12px;
-      margin-top:1rem;
-    }
+   .hero { padding-top: 4.5rem; }
+   .hero-grid {
+     display: grid;
+     grid-template-columns: 1.1fr 0.9fr;
+     gap: 2.2rem;
+     align-items: center;
+   }
 
-    .small { font-size:0.85rem; color:#aab7c6; margin-top:2rem; text-align:center; }
+   .eyebrow {
+     display: inline-flex;
+     align-items: center;
+     gap: 0.5rem;
+     background: rgba(233, 69, 96, 0.14);
+     border: 1px solid rgba(233, 69, 96, 0.35);
+     color: #ffdce3;
+     padding: 0.35rem 0.8rem;
+     border-radius: 999px;
+     font-size: 0.85rem;
+     margin-bottom: 1rem;
+   }
 
-    footer { border-top:1px solid var(--border); padding:1.5rem; text-align:center; color:var(--muted); }
+   h1 { font-size: clamp(2rem, 4vw, 3.2rem); margin-bottom: 0.9rem; }
 
-    @media(max-width:900px){
-      .hero-grid { grid-template-columns:1fr; }
-      .grid-3 { grid-template-columns:1fr; }
-    }
-  </style>
+   .hero p {
+     color: var(--muted);
+     font-size: clamp(1rem, 2vw, 1.14rem);
+     max-width: 52ch;
+     margin-bottom: 1.2rem;
+   }
+
+   .urgency-line {
+     color: #ffdce3;
+     font-size: 0.94rem;
+     margin-top: 1rem;
+     max-width: 52ch;
+   }
+
+   .btn {
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+     gap: 0.55rem;
+     font-weight: 700;
+     border-radius: 12px;
+     border: 0;
+     cursor: pointer;
+     padding: 0.95rem 1.4rem;
+     font-size: 1rem;
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+   }
+   .btn:hover { transform: translateY(-2px); }
+
+   .btn-whatsapp {
+     background: var(--success);
+     color: #05220f;
+     box-shadow: 0 12px 26px rgba(37, 211, 102, 0.35);
+   }
+   .btn-whatsapp:hover { box-shadow: 0 16px 32px rgba(37, 211, 102, 0.5); }
+
+   .btn-outline {
+     background: transparent;
+     color: var(--text);
+     border: 1px solid var(--border);
+   }
+   .btn-outline:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
+
+   .whatsapp-icon { width: 18px; height: 18px; display: inline-block; color: #ffffff; flex-shrink: 0; }
+
+   .analysis-card {
+     background: linear-gradient(180deg, #17314a 0%, #102338 100%);
+     border: 1px solid var(--border);
+     border-radius: var(--radius);
+     box-shadow: var(--shadow);
+     overflow: hidden;
+   }
+   .analysis-head {
+     padding: 1rem 1.2rem;
+     border-bottom: 1px solid var(--border);
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     color: var(--muted);
+     font-size: 0.92rem;
+   }
+   .analysis-body { padding: 1.2rem; display: grid; gap: 1rem; }
+
+   .risk-badge {
+     background: rgba(233, 69, 96, 0.18);
+     border: 1px solid rgba(233, 69, 96, 0.5);
+     color: #ffd5dc;
+     border-radius: 12px;
+     padding: 1rem;
+     font-weight: 700;
+     display: grid;
+     gap: 0.4rem;
+   }
+   .risk-badge strong { font-family: "Sora", sans-serif; font-size: 1.2rem; color: #fff; }
+
+   .list { list-style: none; display: grid; gap: 0.7rem; color: var(--muted); font-size: 0.95rem; }
+   .list li { padding-left: 1.4rem; position: relative; }
+   .list li::before { content: "•"; color: var(--accent); position: absolute; left: 0.3rem; }
+
+   .recommendation {
+     background: rgba(255, 255, 255, 0.07);
+     border: 1px solid var(--border);
+     border-radius: 12px;
+     padding: 0.85rem;
+     font-size: 0.93rem;
+     color: #edf4fb;
+   }
+
+   .stats-bar {
+     padding: 2.5rem 0;
+     border-top: 1px solid var(--border);
+     border-bottom: 1px solid var(--border);
+     background: rgba(255, 255, 255, 0.02);
+   }
+   .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; text-align: center; }
+   .stat-item { display: grid; gap: 0.3rem; }
+   .stat-number {
+     font-family: "Sora", sans-serif;
+     font-size: clamp(2rem, 3.5vw, 2.8rem);
+     font-weight: 800;
+     color: var(--accent);
+     line-height: 1;
+   }
+   .stat-label { color: var(--muted); font-size: 0.92rem; }
+
+   .section-title { text-align: center; font-size: clamp(1.6rem, 2.5vw, 2.2rem); margin-bottom: 2rem; }
+   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+   .card {
+     background: rgba(255, 255, 255, 0.04);
+     border: 1px solid var(--border);
+     border-radius: var(--radius);
+     padding: 1.2rem;
+     transition: border-color 0.2s, transform 0.2s;
+   }
+   .card:hover { border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
+
+   .step-num {
+     width: 36px;
+     height: 36px;
+     border-radius: 50%;
+     display: grid;
+     place-items: center;
+     background: var(--accent);
+     font-weight: 700;
+     margin-bottom: 0.8rem;
+   }
+   .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+   .card p { color: var(--muted); font-size: 0.95rem; }
+
+   .plan { position: relative; display: grid; gap: 0.5rem; }
+   .price { font-family: "Sora", sans-serif; font-size: 1.8rem; }
+   .plan small { color: var(--muted); }
+
+   .plan-features { list-style: none; display: grid; gap: 0.55rem; margin: 0.8rem 0; padding: 0; }
+   .plan-features li { display: flex; align-items: center; gap: 0.55rem; color: var(--muted); font-size: 0.92rem; }
+   .plan-features li .check {
+     width: 18px;
+     height: 18px;
+     flex-shrink: 0;
+     border-radius: 50%;
+     background: rgba(37, 211, 102, 0.15);
+     border: 1px solid rgba(37, 211, 102, 0.4);
+     display: grid;
+     place-items: center;
+   }
+   .plan-features li .check svg { width: 10px; height: 10px; color: var(--success); }
+
+   .badge-recom {
+     position: absolute;
+     top: -12px;
+     right: 12px;
+     background: var(--accent);
+     border-radius: 999px;
+     padding: 0.25rem 0.65rem;
+     font-size: 0.72rem;
+     font-weight: 700;
+   }
+
+   .plan.recommended {
+     border-color: rgba(233, 69, 96, 0.65);
+     box-shadow: 0 12px 34px rgba(233, 69, 96, 0.22);
+     transform: translateY(-3px);
+   }
+   .plan.recommended:hover { transform: translateY(-5px); }
+
+   .plan-note { color: var(--muted); font-size: 0.82rem; text-align: center; margin-top: 1rem; }
+
+   .faq-list { display: grid; gap: 0.7rem; max-width: 780px; margin-inline: auto; }
+   .faq-item { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: border-color 0.2s; }
+   .faq-item.open { border-color: rgba(233, 69, 96, 0.4); }
+
+   .faq-question {
+     width: 100%;
+     background: none;
+     border: none;
+     color: var(--text);
+     cursor: pointer;
+     display: flex;
+     justify-content: space-between;
+     align-items: center;
+     padding: 1.1rem 1.3rem;
+     text-align: left;
+     font-family: "Sora", sans-serif;
+     font-weight: 600;
+     font-size: 1rem;
+     gap: 1rem;
+   }
+   .faq-question .faq-icon {
+     width: 22px;
+     height: 22px;
+     flex-shrink: 0;
+     border-radius: 50%;
+     background: rgba(233, 69, 96, 0.15);
+     border: 1px solid rgba(233, 69, 96, 0.35);
+     display: grid;
+     place-items: center;
+     transition: transform 0.3s ease, background 0.2s;
+   }
+   .faq-item.open .faq-icon { transform: rotate(45deg); background: rgba(233, 69, 96, 0.3); }
+   .faq-icon svg { width: 12px; height: 12px; color: var(--accent); }
+
+   .faq-answer {
+     max-height: 0;
+     overflow: hidden;
+     transition: max-height 0.4s ease, padding 0.3s ease;
+     padding: 0 1.3rem;
+     color: var(--muted);
+     font-size: 0.95rem;
+     line-height: 1.7;
+   }
+   .faq-item.open .faq-answer { max-height: 260px; padding: 0 1.3rem 1.2rem; }
+
+   .float-wa {
+     position: fixed;
+     bottom: 2rem;
+     right: 2rem;
+     z-index: 999;
+     width: 60px;
+     height: 60px;
+     border-radius: 50%;
+     background: var(--success);
+     color: #05220f;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
+     border: none;
+     cursor: pointer;
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+     animation: pulse-wa 2.4s ease-in-out infinite;
+   }
+   .float-wa:hover { transform: scale(1.1); box-shadow: 0 12px 36px rgba(37, 211, 102, 0.6); animation: none; }
+   .float-wa svg { width: 28px; height: 28px; }
+
+   @keyframes pulse-wa {
+     0%, 100% { box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45); }
+     50% { box-shadow: 0 8px 40px rgba(37, 211, 102, 0.75), 0 0 0 10px rgba(37, 211, 102, 0.1); }
+   }
+
+   footer { border-top: 1px solid var(--border); padding: 1.7rem 0; color: var(--muted); text-align: center; font-size: 0.92rem; }
+
+   .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; will-change: opacity, transform; }
+   .reveal.show { opacity: 1; transform: translateY(0); }
+
+   @media (max-width: 960px) {
+     .hero-grid { grid-template-columns: 1fr; }
+     .grid-3 { grid-template-columns: 1fr; }
+     .stats-grid { grid-template-columns: repeat(3, 1fr); }
+     nav ul { gap: 0.8rem; font-size: 0.92rem; }
+   }
+
+   @media (max-width: 680px) { .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+
+   @media (max-width: 560px) {
+     section { padding: 4rem 0; }
+     .nav { min-height: 70px; flex-wrap: nowrap; padding: 0 0; }
+     nav { display: none; }
+     .hamburger { display: flex; }
+     .float-wa { width: 56px; height: 56px; bottom: 1.5rem; right: 1.5rem; }
+     .float-wa svg { width: 26px; height: 26px; }
+   }
+ </style>
 </head>
 <body>
 
-<header>
-  <div class="container nav">
-    <div class="logo">Vigia<span>Digital</span></div>
-  </div>
-</header>
+ <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20Digital." class="float-wa" aria-label="Abrir WhatsApp do Vigia Digital" target="_blank" rel="noopener">
+   <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+     <path d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/>
+     <path d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/>
+   </svg>
+ </a>
 
-<main>
+ <header>
+   <div class="container nav">
+     <a href="#top" class="logo" aria-label="Vigia Digital - Início">
+       <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+         <path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/>
+         <ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/>
+         <circle cx="20" cy="20" r="2.8" fill="#e94560"/>
+         <circle cx="21.2" cy="18.8" r="0.9" fill="white" opacity="0.8"/>
+         <path d="M14 13.5 Q20 9 26 13.5" stroke="#25d366" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.6"/>
+       </svg>
+       Vigia<span>Digital</span>
+     </a>
+     <nav aria-label="Navegação principal">
+       <ul>
+         <li><a href="#como-funciona">Como funciona</a></li>
+         <li><a href="#analises">Análises</a></li>
+         <li><a href="#planos">Planos</a></li>
+         <li><a href="#depoimentos">Depoimentos</a></li>
+         <li><a href="#faq">FAQ</a></li>
+       </ul>
+     </nav>
+     <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
+       <span></span><span></span><span></span>
+     </button>
+   </div>
+   <div class="mobile-nav" id="mobileNav" aria-hidden="true">
+     <a href="#como-funciona">Como funciona</a>
+     <a href="#analises">Análises</a>
+     <a href="#planos">Planos</a>
+     <a href="#depoimentos">Depoimentos</a>
+     <a href="#faq">FAQ</a>
+   </div>
+ </header>
 
-<section>
-  <div class="container hero-grid">
+ <main id="top">
+   <section class="hero">
+     <div class="container hero-grid">
+       <div class="reveal">
+         <span class="eyebrow">🛡️ Proteção digital do jeito simples</span>
+         <h1>Golpes estão cada vez mais convincentes.<br>Antes de pagar, manda aqui.</h1>
+         <p>A gente analisa sinais de risco em segundos, direto no seu WhatsApp, pra te ajudar a decidir com mais segurança.</p>
+         <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20gr%C3%A1tis." class="btn btn-whatsapp" aria-label="Testar Vigia Digital grátis agora" target="_blank" rel="noopener">
+           <svg class="whatsapp-icon" viewBox="0 0 32 32" aria-hidden="true">
+             <path fill="currentColor" d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/>
+             <path fill="currentColor" d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/>
+           </svg>
+           Testar grátis agora — leva poucos segundos
+         </a>
+         <p class="urgency-line">Golpistas usam pressa. O Vigia te ajuda a desacelerar antes de agir.</p>
+       </div>
 
-    <div>
-      <h1>Golpes estão cada vez mais convincentes.<br>Antes de pagar, manda aqui.</h1>
-      <p>O Vigia Digital analisa mensagens, boletos e links suspeitos e te ajuda a entender o risco — direto no WhatsApp, em poucos segundos.</p>
+       <article class="analysis-card reveal" aria-label="Exemplo de análise do Vigia Digital">
+         <div class="analysis-head"><span>WhatsApp • Vigia Digital</span><span>Agora</span></div>
+         <div class="analysis-body">
+           <div class="risk-badge">
+             <span>🔴 RISCO ALTO — <span id="risk-score" data-target="78">0%</span></span>
+             <strong>Possível tentativa de golpe</strong>
+           </div>
+           <ul class="list">
+             <li>Tem link estranho levando para site que não parece oficial.</li>
+             <li>Mensagem com pressa para você pagar agora.</li>
+             <li>Pediram dados pessoais fora de um canal seguro.</li>
+           </ul>
+           <div class="recommendation">
+             <strong>Recomendação:</strong> não clique e não pague agora. Confira antes no aplicativo, site ou telefone oficial da empresa.
+           </div>
+         </div>
+       </article>
+     </div>
+   </section>
 
-      <a href="https://wa.me/5581995513006" class="btn">Testar grátis agora</a>
+   <div class="stats-bar">
+     <div class="container stats-grid">
+       <div class="stat-item reveal">
+         <span class="stat-number">+100</span>
+         <span class="stat-label">tipos de sinais de golpe observados</span>
+       </div>
+       <div class="stat-item reveal">
+         <span class="stat-number">⚡</span>
+         <span class="stat-label">resposta rápida pelo WhatsApp</span>
+       </div>
+       <div class="stat-item reveal">
+         <span class="stat-number">24h</span>
+         <span class="stat-label">para consultar antes de agir</span>
+       </div>
+     </div>
+   </div>
 
-      <div class="highlight">
-        Golpistas usam pressa. A gente te ajuda a desacelerar e pensar antes de agir.
-      </div>
-    </div>
+   <section id="como-funciona">
+     <div class="container">
+       <h2 class="section-title reveal">Como funciona</h2>
+       <div class="grid-3">
+         <article class="card reveal"><div class="step-num">1</div><h3>Você recebe algo suspeito</h3><p>Chega uma mensagem, um boleto ou um print que parece estranho.</p></article>
+         <article class="card reveal"><div class="step-num">2</div><h3>Encaminha para o Vigia</h3><p>Você encaminha no WhatsApp, igual faria com um amigo.</p></article>
+         <article class="card reveal"><div class="step-num">3</div><h3>Recebe uma orientação clara</h3><p>Em poucos segundos, você entende os sinais de risco e o melhor caminho para confirmar.</p></article>
+       </div>
+     </div>
+   </section>
 
-    <div class="card">
-      <strong>🔴 Exemplo de análise</strong>
-      <p>Mensagem com urgência + link estranho + pedido de pagamento imediato.</p>
-      <p><strong>Risco alto.</strong> Melhor confirmar antes de qualquer ação.</p>
-    </div>
+   <section id="analises">
+     <div class="container">
+       <h2 class="section-title reveal">O que analisamos</h2>
+       <div class="grid-3">
+         <article class="card reveal"><h3>💬 Mensagens de WhatsApp e SMS</h3><p>Vemos palavras suspeitas, links estranhos, urgência artificial e pedidos fora do normal.</p></article>
+         <article class="card reveal"><h3>📄 Boletos bancários</h3><p>Apontamos sinais de atenção antes de você pagar, como dados inconsistentes e instruções suspeitas.</p></article>
+         <article class="card reveal"><h3>🖼️ Prints de telas suspeitas</h3><p>Analisamos a imagem para destacar indícios de golpe e orientar uma checagem segura.</p></article>
+       </div>
+     </div>
+   </section>
 
-  </div>
-</section>
+   <section id="planos">
+     <div class="container">
+       <h2 class="section-title reveal">Planos</h2>
+       <div class="grid-3">
+         <article class="card plan reveal">
+           <h3>Gratuito</h3><p class="price">R$ 0</p><small>Para experimentar</small>
+           <ul class="plan-features">
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> 3 análises por mês</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Análise de mensagens</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Resposta pelo WhatsApp</li>
+           </ul>
+           <a href="https://wa.me/5581995513006?text=Quero%20come%C3%A7ar%20gr%C3%A1tis%20no%20Vigia%20Digital" class="btn btn-outline" target="_blank" rel="noopener">Começar grátis</a>
+         </article>
 
-<section>
-  <div class="container">
-    <h2>Como funciona</h2>
+         <article class="card plan reveal">
+           <h3>Essencial</h3><p class="price">R$ 14,90<small style="font-size:1rem; font-family:Inter">/mês</small></p><small>Para uso individual</small>
+           <ul class="plan-features">
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Análises recorrentes</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Boletos e prints</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Histórico de análises</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Suporte prioritário</li>
+           </ul>
+           <a href="https://wa.me/5581995513006?text=Quero%20assinar%20o%20plano%20Essencial" class="btn btn-whatsapp" target="_blank" rel="noopener">Assinar agora</a>
+         </article>
 
-    <div class="grid-3">
-      <div class="card">
-        <h3>1. Recebe algo suspeito</h3>
-        <p>Uma mensagem, um boleto ou um link estranho.</p>
-      </div>
+         <article class="card plan recommended reveal">
+           <span class="badge-recom">⭐ Recomendado</span><h3>Família</h3>
+           <p class="price">R$ 24,90<small style="font-size:1rem; font-family:Inter">/mês</small></p><small>Para toda a família</small>
+           <ul class="plan-features">
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Até 4 números</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Uso recorrente familiar</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Todos os tipos de análise</li>
+             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Prioridade no atendimento</li>
+           </ul>
+           <a href="https://wa.me/5581995513006?text=Quero%20assinar%20o%20plano%20Fam%C3%ADlia" class="btn btn-whatsapp" target="_blank" rel="noopener">Assinar agora</a>
+         </article>
+       </div>
+       <p class="plan-note">Planos sujeitos a política de uso justo e disponibilidade técnica. O foco do Vigia é apoiar sua decisão, não substituir canais oficiais.</p>
+     </div>
+   </section>
 
-      <div class="card">
-        <h3>2. Envia para o Vigia</h3>
-        <p>Encaminha no WhatsApp como faria com um amigo.</p>
-      </div>
+   <section id="boas-vindas" style="padding: 3rem 0 2rem;">
+     <div class="container">
+       <h2 class="section-title reveal">Veja como é simples</h2>
+       <p style="text-align:center; color:var(--muted); margin-top:-1.2rem; margin-bottom:2rem;" class="reveal">Assim que você manda sua primeira mensagem, o Vigia já se apresenta:</p>
 
-      <div class="card">
-        <h3>3. Recebe orientação</h3>
-        <p>Você entende o risco e decide com mais segurança.</p>
-      </div>
-    </div>
+       <div class="reveal" style="max-width:440px; margin:0 auto; background:linear-gradient(160deg,#0b1f2e,#0e2538); border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:var(--shadow);">
+         <div style="background:#0a1929; padding:0.8rem 1rem; display:flex; align-items:center; gap:0.8rem; border-bottom:1px solid var(--border);">
+           <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border:2px solid #25d366;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;"><path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/><ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/><circle cx="20" cy="20" r="2.8" fill="#e94560"/><circle cx="21.2" cy="18.8" r="0.9" fill="white" opacity="0.8"/></svg>
+           </div>
+           <div><div style="font-family:'Sora',sans-serif;font-weight:700;font-size:0.95rem;">Vigia Digital</div><div style="font-size:0.75rem;color:#25d366;">● online</div></div>
+         </div>
 
-  </div>
-</section>
+         <div style="padding:1.2rem; display:grid; gap:0.9rem; background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect width=%2260%22 height=%2260%22 fill=%22%230b1f2e%22/></svg>');">
+           <div style="display:flex;justify-content:flex-end;"><div style="background:#005c4b;color:#e9edef;padding:0.6rem 0.9rem;border-radius:12px 12px 2px 12px;max-width:80%;font-size:0.88rem;line-height:1.5;">Olá! Quero testar o Vigia grátis.<div style="font-size:0.7rem;color:#8eab9e;text-align:right;margin-top:2px;">09:14 ✓✓</div></div></div>
+           <div style="display:flex;align-items:flex-end;gap:0.5rem;">
+             <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border:1.5px solid #25d366;display:flex;align-items:center;justify-content:center;flex-shrink:0;"></div>
+             <div style="background:#1f2c34;color:#e9edef;padding:0.75rem 0.9rem;border-radius:2px 12px 12px 12px;max-width:88%;font-size:0.85rem;line-height:1.6;">
+               👋 Olá! Bem-vindo ao *Vigia Digital*.<br><br>
+               Sou seu assistente de apoio contra golpes. Posso analisar sinais de risco em mensagens, links, boletos e prints suspeitos.<br><br>
+               📲 *Como usar:*<br>
+               • Encaminhe a mensagem suspeita<br>
+               • Mande o código do boleto<br>
+               • Envie um print de SMS ou WhatsApp<br><br>
+               Eu te mostro pontos de atenção e o melhor caminho para confirmar antes de clicar ou pagar.<br><br>
+               Você tem *3 análises gratuitas* este mês. Manda o que quiser verificar 👇
+               <div style="font-size:0.7rem;color:#8eab9e;text-align:right;margin-top:4px;">09:14 ✓✓</div>
+             </div>
+           </div>
+         </div>
+         <div style="padding:0.7rem 1rem;background:#0a1929;border-top:1px solid var(--border);display:flex;align-items:center;gap:0.5rem;"><div style="flex:1;background:#2a3942;border-radius:20px;padding:0.5rem 1rem;color:#8eab9e;font-size:0.82rem;">Escreva uma mensagem...</div><div style="width:36px;height:36px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;margin-left:2px;"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></div></div>
+       </div>
 
-<section>
-  <div class="container">
-    <h2>Já ajudamos a evitar prejuízos</h2>
+       <div style="text-align:center;margin-top:1.8rem;" class="reveal">
+         <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20gr%C3%A1tis." class="btn btn-whatsapp" target="_blank" rel="noopener" style="font-size:1.05rem;padding:1rem 2rem;">Quero ver isso funcionando</a>
+       </div>
+     </div>
+   </section>
 
-    <div class="grid-3">
-      <div class="card">"Quase paguei um boleto falso de R$ 800."</div>
-      <div class="card">"Evitei perder R$ 1.200 em um golpe de WhatsApp."</div>
-      <div class="card">"Agora sempre confiro antes de pagar qualquer coisa."</div>
-    </div>
-  </div>
-</section>
+   <section id="depoimentos">
+     <div class="container">
+       <h2 class="section-title reveal">Situações em que o Vigia pode ajudar</h2>
+       <div class="grid-3">
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Eu quase paguei um boleto estranho. Mandei pro Vigia e percebi vários sinais de risco antes de continuar."</p><strong style="font-size:0.9rem;">Boleto suspeito</strong></article>
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Meu pai recebeu uma mensagem fingindo ser do banco. O Vigia orientou a confirmar pelo canal oficial antes de clicar."</p><strong style="font-size:0.9rem;">Mensagem de banco</strong></article>
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Coloquei minha família para consultar antes de pagar ou responder mensagens estranhas. Virou um hábito de segurança."</p><strong style="font-size:0.9rem;">Proteção familiar</strong></article>
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Recebi um SMS de entrega com taxa urgente. O Vigia apontou sinais de golpe e me fez verificar direto no site oficial."</p><strong style="font-size:0.9rem;">SMS de entrega</strong></article>
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Sou aposentada e agora mando mensagens suspeitas antes de responder. Me sinto mais tranquila."</p><strong style="font-size:0.9rem;">Uso por idosos</strong></article>
+         <article class="card reveal" style="display:grid;gap:0.7rem;"><div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div><p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Recebo comprovantes e prints no trabalho. O Vigia ajuda a identificar inconsistências antes de liberar qualquer coisa."</p><strong style="font-size:0.9rem;">Vendas online</strong></article>
+       </div>
+     </div>
+   </section>
 
-<section>
-  <div class="container">
-    <h2>O que analisamos</h2>
+   <section id="faq">
+     <div class="container">
+       <h2 class="section-title reveal">Perguntas frequentes</h2>
+       <div class="faq-list reveal">
+         <div class="faq-item"><button class="faq-question" aria-expanded="false">É seguro enviar minha mensagem para o Vigia Digital?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span></button><div class="faq-answer">Buscamos minimizar o uso e o armazenamento de dados, utilizando práticas de segurança para proteger suas informações. Evite enviar senhas, códigos de autenticação ou dados sensíveis que não sejam necessários para a análise.</div></div>
+         <div class="faq-item"><button class="faq-question" aria-expanded="false">Como funciona o plano gratuito?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span></button><div class="faq-answer">No plano gratuito você pode fazer até 3 análises por mês, sem precisar cadastrar cartão. Basta entrar em contato pelo WhatsApp e enviar o conteúdo suspeito.</div></div>
+         <div class="faq-item"><button class="faq-question" aria-expanded="false">Quanto tempo leva para receber a análise?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span></button><div class="faq-answer">A resposta costuma ser rápida. Em casos mais complexos, como análise de imagens ou boletos, pode levar um pouco mais.</div></div>
+         <div class="faq-item"><button class="faq-question" aria-expanded="false">O Vigia Digital pode errar na análise?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span></button><div class="faq-answer">O Vigia ajuda a identificar sinais de risco, mas nenhum sistema consegue prever todos os golpes. Em caso de dúvida, confirme sempre pelo aplicativo, site ou telefone oficial da empresa ou pessoa envolvida.</div></div>
+         <div class="faq-item"><button class="faq-question" aria-expanded="false">Posso cancelar meu plano quando quiser?<span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span></button><div class="faq-answer">Sim, sem fidelidade e sem burocracia. Basta enviar uma mensagem para o nosso WhatsApp solicitando o cancelamento.</div></div>
+       </div>
+     </div>
+   </section>
+ </main>
 
-    <div class="grid-3">
-      <div class="card">Mensagens de WhatsApp e SMS</div>
-      <div class="card">Boletos bancários</div>
-      <div class="card">Links e prints suspeitos</div>
-    </div>
+ <footer>
+   <div class="container">
+     Análise de apoio baseada em padrões de risco. Não substitui verificação em canais oficiais. Em caso de dúvida, confirme antes de qualquer pagamento. &nbsp;·&nbsp; © 2026 Vigia Digital
+   </div>
+ </footer>
 
-  </div>
-</section>
+ <script>
+   const hamburgerBtn = document.getElementById('hamburgerBtn');
+   const mobileNav = document.getElementById('mobileNav');
 
-<section>
-  <div class="container">
-    <h2>Pra que serve</h2>
-    <div class="card">
-      Evitar decisões impulsivas. O Vigia Digital não toma decisões por você — ele te dá clareza para agir com mais segurança.
-    </div>
-  </div>
-</section>
+   hamburgerBtn.addEventListener('click', () => {
+     const isOpen = mobileNav.classList.toggle('open');
+     hamburgerBtn.classList.toggle('open', isOpen);
+     hamburgerBtn.setAttribute('aria-expanded', isOpen);
+     mobileNav.setAttribute('aria-hidden', !isOpen);
+     mobileNav.style.display = isOpen ? 'flex' : '';
+   });
 
-</main>
+   mobileNav.querySelectorAll('a').forEach(link => {
+     link.addEventListener('click', () => {
+       mobileNav.classList.remove('open');
+       hamburgerBtn.classList.remove('open');
+       hamburgerBtn.setAttribute('aria-expanded', false);
+       mobileNav.setAttribute('aria-hidden', true);
+     });
+   });
 
-<footer>
-  <div class="container">
-    O Vigia Digital oferece uma análise de apoio baseada em padrões de risco. Sempre recomendamos confirmar informações nos canais oficiais antes de qualquer pagamento ou ação.
-  </div>
-</footer>
+   const reveals = document.querySelectorAll('.reveal');
+   const revealObserver = new IntersectionObserver((entries) => {
+     entries.forEach((entry) => {
+       if (entry.isIntersecting) {
+         entry.target.classList.add('show');
+         revealObserver.unobserve(entry.target);
+       }
+     });
+   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+   reveals.forEach(el => revealObserver.observe(el));
 
+   function animateCounter(el, target, suffix = '', duration = 1600) {
+     if (el.dataset.animated === 'true') return;
+     const frame = 16;
+     let current = 0;
+     const step = Math.max(1, Math.ceil((target / duration) * frame));
+     const timer = setInterval(() => {
+       current = Math.min(current + step, target);
+       el.textContent = current + suffix;
+       if (current >= target) { clearInterval(timer); el.dataset.animated = 'true'; }
+     }, frame);
+   }
+
+   const scoreEl = document.getElementById('risk-score');
+   const mockupEl = document.querySelector('.analysis-card');
+   if (mockupEl && scoreEl) {
+     new IntersectionObserver((entries, obs) => {
+       entries.forEach(entry => {
+         if (entry.isIntersecting) {
+           animateCounter(scoreEl, Number(scoreEl.dataset.target) || 78, '%');
+           obs.unobserve(entry.target);
+         }
+       });
+     }, { threshold: 0.4 }).observe(mockupEl);
+   }
+
+   document.querySelectorAll('.faq-question').forEach(btn => {
+     btn.addEventListener('click', () => {
+       const item = btn.closest('.faq-item');
+       const isOpen = item.classList.contains('open');
+       document.querySelectorAll('.faq-item.open').forEach(i => {
+         i.classList.remove('open');
+         i.querySelector('.faq-question').setAttribute('aria-expanded', false);
+       });
+       if (!isOpen) {
+         item.classList.add('open');
+         btn.setAttribute('aria-expanded', true);
+       }
+     });
+   });
+
+   if (window.innerWidth <= 560) {
+     mobileNav.style.display = 'none';
+   }
+ </script>
 </body>
 </html>
