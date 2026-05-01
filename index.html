@@ -1,1002 +1,387 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
- <meta charset="UTF-8" />
- <meta name="viewport" content="width=device-width, initial-scale=1.0" />
- <title>Vigia Digital | Proteção contra golpes pelo WhatsApp</title>
- <meta name="description" content="Tire dúvida de golpe no WhatsApp em poucos segundos. Envie mensagem, print ou boleto e receba uma análise simples." />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vigia Digital | Análise educativa de golpes no WhatsApp</title>
+  <meta name="description" content="Envie mensagem, print, boleto ou link suspeito pelo WhatsApp e receba uma análise educativa de risco com orientações de segurança." />
+  <meta name="robots" content="index,follow" />
+  <meta property="og:title" content="Vigia Digital | Proteção contra golpes" />
+  <meta property="og:description" content="Antes de pagar ou clicar, envie para o Vigia Digital. Análise educativa de risco contra golpes pelo WhatsApp." />
+  <meta property="og:type" content="website" />
 
- <link rel="preconnect" href="https://fonts.googleapis.com" />
- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet" />
 
- <style>
-   :root {
-     --bg: #0d1b2a;
-     --surface: #12263a;
-     --text: #ffffff;
-     --muted: #dbe3eb;
-     --accent: #e94560;
-     --success: #25d366;
-     --border: rgba(255, 255, 255, 0.14);
-     --shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
-     --radius: 16px;
-     --max: 1120px;
-   }
+  <style>
+    :root {
+      --bg: #0d1b2a;
+      --surface: #12263a;
+      --surface-2: #17314a;
+      --text: #ffffff;
+      --muted: #dbe3eb;
+      --soft: #98a9ba;
+      --accent: #e94560;
+      --success: #25d366;
+      --warning: #f5a623;
+      --border: rgba(255, 255, 255, 0.14);
+      --shadow: 0 20px 45px rgba(0, 0, 0, 0.28);
+      --radius: 18px;
+      --max: 1120px;
+    }
 
-   * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(233,69,96,.18), transparent 32rem),
+        linear-gradient(180deg, #0d1b2a 0%, #11263b 42%, #0d1b2a 100%);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    img, svg { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    .container { width: min(92%, var(--max)); margin-inline: auto; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
-   body {
-     font-family: "Inter", system-ui, -apple-system, sans-serif;
-     background: linear-gradient(180deg, #0d1b2a 0%, #11263b 40%, #0d1b2a 100%);
-     color: var(--text);
-     line-height: 1.6;
-   }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(13, 27, 42, 0.88);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+    .logo { display:flex; align-items:center; gap:.55rem; font-family:"Sora",sans-serif; font-size:1.45rem; font-weight:800; }
+    .logo span { color: var(--accent); }
+    .logo-icon { width:36px; height:36px; flex:0 0 auto; }
+    nav ul { list-style:none; display:flex; gap:1rem; color:var(--muted); font-weight:600; font-size:.94rem; }
+    nav a:hover { color:#fff; }
 
-   img, svg { display: block; max-width: 100%; }
-   a { color: inherit; text-decoration: none; }
+    .hamburger { display:none; flex-direction:column; gap:5px; background:transparent; border:0; padding:7px; border-radius:10px; cursor:pointer; }
+    .hamburger span { width:24px; height:2px; background:#fff; border-radius:99px; transition:.25s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity:0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .mobile-nav { display:none; max-height:0; overflow:hidden; transition:max-height .35s ease; background:rgba(13,27,42,.98); border-top:1px solid var(--border); }
+    .mobile-nav.open { max-height:360px; }
+    .mobile-nav a { display:block; padding:1rem 1.2rem; border-bottom:1px solid var(--border); color:var(--muted); font-weight:600; }
 
-   .container {
-     width: min(92%, var(--max));
-     margin-inline: auto;
-   }
+    section { padding: 5rem 0; }
+    h1,h2,h3 { font-family:"Sora",sans-serif; line-height:1.15; }
+    h1 { font-size: clamp(2.15rem, 5vw, 3.65rem); letter-spacing:-.04em; margin-bottom:1rem; }
+    .section-title { text-align:center; font-size:clamp(1.65rem,3vw,2.35rem); margin-bottom:2rem; letter-spacing:-.03em; }
+    .section-subtitle { text-align:center; color:var(--muted); max-width:720px; margin:-1rem auto 2rem; }
 
-   /* ── HEADER ── */
-   header {
-     position: sticky;
-     top: 0;
-     z-index: 100;
-     backdrop-filter: blur(8px);
-     background: rgba(13, 27, 42, 0.85);
-     border-bottom: 1px solid var(--border);
-   }
+    .hero { padding-top: 4.5rem; }
+    .hero-grid { display:grid; grid-template-columns: 1.08fr .92fr; gap:2.4rem; align-items:center; }
+    .eyebrow { display:inline-flex; align-items:center; gap:.5rem; background:rgba(233,69,96,.14); border:1px solid rgba(233,69,96,.38); color:#ffdce3; padding:.4rem .85rem; border-radius:999px; font-size:.86rem; margin-bottom:1rem; font-weight:700; }
+    .hero p { color:var(--muted); font-size:clamp(1rem,2vw,1.18rem); max-width:56ch; margin-bottom:1.55rem; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; }
+    .trust-row { display:flex; flex-wrap:wrap; gap:.7rem; color:var(--soft); font-size:.88rem; margin-top:1.05rem; }
+    .trust-pill { border:1px solid var(--border); border-radius:999px; padding:.35rem .65rem; background:rgba(255,255,255,.035); }
 
-   .nav {
-     min-height: 76px;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     gap: 1.2rem;
-   }
+    .btn { display:inline-flex; align-items:center; justify-content:center; gap:.55rem; font-weight:800; border-radius:13px; border:0; cursor:pointer; padding:.95rem 1.35rem; font-size:1rem; transition: transform .18s, box-shadow .18s, background .18s; }
+    .btn:hover { transform:translateY(-2px); }
+    .btn-whatsapp { background:var(--success); color:#05220f; box-shadow:0 14px 30px rgba(37,211,102,.3); }
+    .btn-outline { background:rgba(255,255,255,.035); color:#fff; border:1px solid var(--border); }
+    .btn-outline:hover { background:rgba(255,255,255,.07); }
+    .whatsapp-icon { width:18px; height:18px; color:#fff; flex:0 0 auto; }
 
-   .logo {
-     display: flex;
-     align-items: center;
-     gap: 0.55rem;
-     font-family: "Sora", sans-serif;
-     font-weight: 800;
-     letter-spacing: 0.4px;
-     font-size: 1.5rem;
-   }
-   .logo span { color: var(--accent); }
-   .logo-icon {
-     width: 36px;
-     height: 36px;
-     flex-shrink: 0;
-   }
+    .analysis-card { background:linear-gradient(180deg,#17314a 0%,#102338 100%); border:1px solid var(--border); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden; }
+    .analysis-head { padding:1rem 1.15rem; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; color:var(--muted); font-size:.92rem; }
+    .analysis-body { padding:1.2rem; display:grid; gap:1rem; }
+    .risk-badge { background:rgba(233,69,96,.18); border:1px solid rgba(233,69,96,.5); color:#ffd5dc; border-radius:14px; padding:1rem; display:grid; gap:.4rem; font-weight:800; }
+    .risk-badge strong { font-family:"Sora",sans-serif; color:#fff; font-size:1.18rem; }
+    .list { list-style:none; display:grid; gap:.7rem; color:var(--muted); font-size:.95rem; }
+    .list li { padding-left:1.35rem; position:relative; }
+    .list li::before { content:"•"; color:var(--accent); position:absolute; left:.28rem; }
+    .recommendation, .legal-note { background:rgba(255,255,255,.07); border:1px solid var(--border); border-radius:13px; padding:.88rem; color:#edf4fb; font-size:.93rem; }
+    .legal-note { color:var(--muted); font-size:.84rem; }
 
-   nav ul {
-     list-style: none;
-     display: flex;
-     gap: 1.1rem;
-     color: var(--muted);
-     font-weight: 500;
-     flex-wrap: wrap;
-     justify-content: flex-end;
-   }
-   nav a:hover { color: #fff; }
+    .notice-strip { padding:1.05rem 0; border-block:1px solid var(--border); background:rgba(245,166,35,.08); color:#ffe6ba; }
+    .notice-strip p { font-size:.92rem; text-align:center; }
 
-   /* ── HAMBURGUER ── */
-   .hamburger {
-     display: none;
-     flex-direction: column;
-     justify-content: center;
-     gap: 5px;
-     background: none;
-     border: none;
-     cursor: pointer;
-     padding: 6px;
-     border-radius: 8px;
-     transition: background 0.2s;
-   }
-   .hamburger:hover { background: rgba(255,255,255,0.07); }
-   .hamburger span {
-     display: block;
-     width: 24px;
-     height: 2px;
-     background: var(--text);
-     border-radius: 2px;
-     transition: transform 0.3s ease, opacity 0.3s ease;
-   }
-   .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-   .hamburger.open span:nth-child(2) { opacity: 0; }
-   .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+    .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+    .card { background:rgba(255,255,255,.045); border:1px solid var(--border); border-radius:var(--radius); padding:1.22rem; transition:border-color .18s, transform .18s; }
+    .card:hover { border-color:rgba(255,255,255,.28); transform:translateY(-2px); }
+    .step-num { width:38px; height:38px; border-radius:50%; display:grid; place-items:center; background:var(--accent); font-weight:800; margin-bottom:.85rem; }
+    .card h3 { font-size:1.08rem; margin-bottom:.45rem; }
+    .card p { color:var(--muted); font-size:.95rem; }
 
-   .mobile-nav {
-     display: none;
-     flex-direction: column;
-     gap: 0;
-     overflow: hidden;
-     max-height: 0;
-     transition: max-height 0.4s ease;
-     background: rgba(13, 27, 42, 0.97);
-     border-top: 1px solid var(--border);
-   }
-   .mobile-nav.open { max-height: 320px; }
-   .mobile-nav a {
-     display: block;
-     padding: 1rem 1.2rem;
-     color: var(--muted);
-     font-weight: 500;
-     border-bottom: 1px solid var(--border);
-     transition: background 0.2s, color 0.2s;
-   }
-   .mobile-nav a:hover { background: rgba(255,255,255,0.05); color: #fff; }
+    .plans .card { display:grid; gap:.6rem; }
+    .price { font-family:"Sora",sans-serif; font-size:1.9rem; font-weight:800; }
+    .plan small { color:var(--soft); }
+    .plan-features { list-style:none; display:grid; gap:.58rem; margin:.7rem 0; }
+    .plan-features li { display:flex; align-items:flex-start; gap:.55rem; color:var(--muted); font-size:.92rem; }
+    .check { width:18px; height:18px; flex:0 0 auto; border-radius:50%; background:rgba(37,211,102,.15); border:1px solid rgba(37,211,102,.4); display:grid; place-items:center; margin-top:.12rem; }
+    .check svg { width:10px; height:10px; color:var(--success); }
+    .recommended { position:relative; border-color:rgba(233,69,96,.7); box-shadow:0 14px 36px rgba(233,69,96,.18); }
+    .badge-recom { position:absolute; top:-12px; right:14px; background:var(--accent); border-radius:999px; padding:.25rem .7rem; font-size:.72rem; font-weight:800; }
 
-   /* ── GERAL ── */
-   section { padding: 5rem 0; }
-   h1, h2, h3 { font-family: "Sora", sans-serif; line-height: 1.2; }
+    .wa-mock { max-width:455px; margin-inline:auto; background:linear-gradient(160deg,#0b1f2e,#0e2538); border:1px solid var(--border); border-radius:22px; overflow:hidden; box-shadow:var(--shadow); }
+    .wa-head { background:#0a1929; padding:.85rem 1rem; display:flex; align-items:center; gap:.8rem; border-bottom:1px solid var(--border); }
+    .avatar { width:42px; height:42px; border-radius:50%; background:linear-gradient(135deg,#0d1b2a,#1a3a5c); border:2px solid var(--success); display:grid; place-items:center; flex:0 0 auto; }
+    .wa-body { padding:1.2rem; display:grid; gap:.9rem; }
+    .bubble-user { margin-left:auto; background:#005c4b; color:#e9edef; padding:.62rem .9rem; border-radius:12px 12px 2px 12px; max-width:82%; font-size:.88rem; }
+    .bubble-bot { background:#1f2c34; color:#e9edef; padding:.75rem .9rem; border-radius:2px 12px 12px 12px; max-width:88%; font-size:.85rem; line-height:1.58; }
+    .time { font-size:.7rem; color:#8eab9e; text-align:right; margin-top:3px; }
+    .wa-footer { padding:.75rem 1rem; background:#0a1929; border-top:1px solid var(--border); display:flex; gap:.5rem; align-items:center; }
+    .wa-input { flex:1; background:#2a3942; border-radius:999px; padding:.5rem 1rem; color:#8eab9e; font-size:.82rem; }
+    .send { width:36px; height:36px; background:var(--success); border-radius:50%; display:grid; place-items:center; }
 
-   /* ── HERO ── */
-   .hero { padding-top: 4.5rem; }
-   .hero-grid {
-     display: grid;
-     grid-template-columns: 1.1fr 0.9fr;
-     gap: 2.2rem;
-     align-items: center;
-   }
+    .faq-list { display:grid; gap:.75rem; max-width:820px; margin-inline:auto; }
+    .faq-item { background:rgba(255,255,255,.045); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; }
+    .faq-question { width:100%; background:none; border:0; color:#fff; cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:1.05rem 1.25rem; text-align:left; font-family:"Sora",sans-serif; font-weight:700; gap:1rem; }
+    .faq-answer { max-height:0; overflow:hidden; transition:max-height .35s ease, padding .25s ease; padding:0 1.25rem; color:var(--muted); font-size:.94rem; }
+    .faq-item.open .faq-answer { max-height:260px; padding:0 1.25rem 1.15rem; }
+    .faq-icon { width:24px; height:24px; border-radius:50%; background:rgba(233,69,96,.14); border:1px solid rgba(233,69,96,.35); display:grid; place-items:center; flex:0 0 auto; transition:.25s; }
+    .faq-item.open .faq-icon { transform:rotate(45deg); }
 
-   .eyebrow {
-     display: inline-flex;
-     align-items: center;
-     gap: 0.5rem;
-     background: rgba(233, 69, 96, 0.14);
-     border: 1px solid rgba(233, 69, 96, 0.35);
-     color: #ffdce3;
-     padding: 0.35rem 0.8rem;
-     border-radius: 999px;
-     font-size: 0.85rem;
-     margin-bottom: 1rem;
-   }
+    .float-wa { position:fixed; bottom:1.6rem; right:1.6rem; z-index:90; width:60px; height:60px; border-radius:50%; background:var(--success); color:#05220f; display:grid; place-items:center; box-shadow:0 10px 30px rgba(37,211,102,.45); animation:pulse 2.4s ease-in-out infinite; }
+    .float-wa svg { width:28px; height:28px; }
+    @keyframes pulse { 50% { box-shadow:0 10px 42px rgba(37,211,102,.75), 0 0 0 10px rgba(37,211,102,.1); } }
 
-   h1 {
-     font-size: clamp(2rem, 4vw, 3.2rem);
-     margin-bottom: 0.9rem;
-   }
+    .footer-links { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-bottom:.7rem; }
+    footer { border-top:1px solid var(--border); padding:1.8rem 0; color:var(--muted); text-align:center; font-size:.9rem; }
+    footer button { background:none; border:0; color:#fff; cursor:pointer; text-decoration:underline; }
 
-   .hero p {
-     color: var(--muted);
-     font-size: clamp(1rem, 2vw, 1.14rem);
-     max-width: 52ch;
-     margin-bottom: 1.6rem;
-   }
+    dialog { width:min(92vw,860px); border:1px solid var(--border); border-radius:20px; background:#102338; color:#fff; box-shadow:var(--shadow); padding:0; }
+    dialog::backdrop { background:rgba(0,0,0,.65); backdrop-filter:blur(4px); }
+    .modal-head { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1.1rem 1.25rem; border-bottom:1px solid var(--border); }
+    .modal-body { padding:1.25rem; color:var(--muted); max-height:72vh; overflow:auto; }
+    .modal-body h3 { color:#fff; margin:1.2rem 0 .4rem; }
+    .modal-body ul { padding-left:1.2rem; }
+    .close-modal { background:rgba(255,255,255,.08); color:#fff; border:1px solid var(--border); border-radius:10px; padding:.45rem .7rem; cursor:pointer; }
 
-   /* ── BOTÕES ── */
-   .btn {
-     display: inline-flex;
-     align-items: center;
-     justify-content: center;
-     gap: 0.55rem;
-     font-weight: 700;
-     border-radius: 12px;
-     border: 0;
-     cursor: pointer;
-     padding: 0.95rem 1.4rem;
-     font-size: 1rem;
-     transition: transform 0.2s ease, box-shadow 0.2s ease;
-   }
-   .btn:hover { transform: translateY(-2px); }
+    .reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease, transform .65s ease; }
+    .reveal.show { opacity:1; transform:translateY(0); }
 
-   .btn-whatsapp {
-     background: var(--success);
-     color: #05220f;
-     box-shadow: 0 12px 26px rgba(37, 211, 102, 0.35);
-   }
-   .btn-whatsapp:hover { box-shadow: 0 16px 32px rgba(37, 211, 102, 0.5); }
-
-   .btn-outline {
-     background: transparent;
-     color: var(--text);
-     border: 1px solid var(--border);
-   }
-   .btn-outline:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); }
-
-   .whatsapp-icon {
-     width: 18px;
-     height: 18px;
-     display: inline-block;
-     color: #ffffff;
-     flex-shrink: 0;
-   }
-
-   /* ── MOCKUP ANÁLISE ── */
-   .analysis-card {
-     background: linear-gradient(180deg, #17314a 0%, #102338 100%);
-     border: 1px solid var(--border);
-     border-radius: var(--radius);
-     box-shadow: var(--shadow);
-     overflow: hidden;
-   }
-   .analysis-head {
-     padding: 1rem 1.2rem;
-     border-bottom: 1px solid var(--border);
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     color: var(--muted);
-     font-size: 0.92rem;
-   }
-   .analysis-body { padding: 1.2rem; display: grid; gap: 1rem; }
-
-   .risk-badge {
-     background: rgba(233, 69, 96, 0.18);
-     border: 1px solid rgba(233, 69, 96, 0.5);
-     color: #ffd5dc;
-     border-radius: 12px;
-     padding: 1rem;
-     font-weight: 700;
-     display: grid;
-     gap: 0.4rem;
-   }
-   .risk-badge strong { font-family: "Sora", sans-serif; font-size: 1.2rem; color: #fff; }
-
-   .list { list-style: none; display: grid; gap: 0.7rem; color: var(--muted); font-size: 0.95rem; }
-   .list li { padding-left: 1.4rem; position: relative; }
-   .list li::before { content: "•"; color: var(--accent); position: absolute; left: 0.3rem; }
-
-   .recommendation {
-     background: rgba(255, 255, 255, 0.07);
-     border: 1px solid var(--border);
-     border-radius: 12px;
-     padding: 0.85rem;
-     font-size: 0.93rem;
-     color: #edf4fb;
-   }
-
-   /* ── STATS BAR ── */
-   .stats-bar {
-     padding: 2.5rem 0;
-     border-top: 1px solid var(--border);
-     border-bottom: 1px solid var(--border);
-     background: rgba(255, 255, 255, 0.02);
-   }
-   .stats-grid {
-     display: grid;
-     grid-template-columns: repeat(3, 1fr);
-     gap: 1rem;
-     text-align: center;
-   }
-   .stat-item { display: grid; gap: 0.3rem; }
-   .stat-number {
-     font-family: "Sora", sans-serif;
-     font-size: clamp(2rem, 3.5vw, 2.8rem);
-     font-weight: 800;
-     color: var(--accent);
-     line-height: 1;
-   }
-   .stat-label { color: var(--muted); font-size: 0.92rem; }
-
-   /* ── TÍTULOS ── */
-   .section-title {
-     text-align: center;
-     font-size: clamp(1.6rem, 2.5vw, 2.2rem);
-     margin-bottom: 2rem;
-   }
-
-   /* ── GRIDS ── */
-   .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-
-   /* ── CARDS GERAIS ── */
-   .card {
-     background: rgba(255, 255, 255, 0.04);
-     border: 1px solid var(--border);
-     border-radius: var(--radius);
-     padding: 1.2rem;
-     transition: border-color 0.2s, transform 0.2s;
-   }
-   .card:hover { border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
-
-   .step-num {
-     width: 36px;
-     height: 36px;
-     border-radius: 50%;
-     display: grid;
-     place-items: center;
-     background: var(--accent);
-     font-weight: 700;
-     margin-bottom: 0.8rem;
-   }
-   .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
-   .card p { color: var(--muted); font-size: 0.95rem; }
-
-   /* ── PLANOS ── */
-   .plan { position: relative; display: grid; gap: 0.5rem; }
-   .price { font-family: "Sora", sans-serif; font-size: 1.8rem; }
-   .plan small { color: var(--muted); }
-
-   .plan-features {
-     list-style: none;
-     display: grid;
-     gap: 0.55rem;
-     margin: 0.8rem 0;
-     padding: 0;
-   }
-   .plan-features li {
-     display: flex;
-     align-items: center;
-     gap: 0.55rem;
-     color: var(--muted);
-     font-size: 0.92rem;
-   }
-   .plan-features li .check {
-     width: 18px;
-     height: 18px;
-     flex-shrink: 0;
-     border-radius: 50%;
-     background: rgba(37, 211, 102, 0.15);
-     border: 1px solid rgba(37, 211, 102, 0.4);
-     display: grid;
-     place-items: center;
-   }
-   .plan-features li .check svg { width: 10px; height: 10px; color: var(--success); }
-
-   .badge-recom {
-     position: absolute;
-     top: -12px;
-     right: 12px;
-     background: var(--accent);
-     border-radius: 999px;
-     padding: 0.25rem 0.65rem;
-     font-size: 0.72rem;
-     font-weight: 700;
-   }
-
-   .plan.recommended {
-     border-color: rgba(233, 69, 96, 0.65);
-     box-shadow: 0 12px 34px rgba(233, 69, 96, 0.22);
-     transform: translateY(-3px);
-   }
-   .plan.recommended:hover { transform: translateY(-5px); }
-
-   /* ── FAQ ── */
-   .faq-list { display: grid; gap: 0.7rem; max-width: 780px; margin-inline: auto; }
-   .faq-item {
-     background: rgba(255, 255, 255, 0.04);
-     border: 1px solid var(--border);
-     border-radius: var(--radius);
-     overflow: hidden;
-     transition: border-color 0.2s;
-   }
-   .faq-item.open { border-color: rgba(233, 69, 96, 0.4); }
-
-   .faq-question {
-     width: 100%;
-     background: none;
-     border: none;
-     color: var(--text);
-     cursor: pointer;
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     padding: 1.1rem 1.3rem;
-     text-align: left;
-     font-family: "Sora", sans-serif;
-     font-weight: 600;
-     font-size: 1rem;
-     gap: 1rem;
-   }
-   .faq-question .faq-icon {
-     width: 22px;
-     height: 22px;
-     flex-shrink: 0;
-     border-radius: 50%;
-     background: rgba(233, 69, 96, 0.15);
-     border: 1px solid rgba(233, 69, 96, 0.35);
-     display: grid;
-     place-items: center;
-     transition: transform 0.3s ease, background 0.2s;
-   }
-   .faq-item.open .faq-icon { transform: rotate(45deg); background: rgba(233, 69, 96, 0.3); }
-   .faq-icon svg { width: 12px; height: 12px; color: var(--accent); }
-
-   .faq-answer {
-     max-height: 0;
-     overflow: hidden;
-     transition: max-height 0.4s ease, padding 0.3s ease;
-     padding: 0 1.3rem;
-     color: var(--muted);
-     font-size: 0.95rem;
-     line-height: 1.7;
-   }
-   .faq-item.open .faq-answer {
-     max-height: 200px;
-     padding: 0 1.3rem 1.2rem;
-   }
-
-   /* ── FLOATING WHATSAPP ── */
-   .float-wa {
-     position: fixed;
-     bottom: 2rem;
-     right: 2rem;
-     z-index: 999;
-     width: 60px;
-     height: 60px;
-     border-radius: 50%;
-     background: var(--success);
-     color: #05220f;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45);
-     border: none;
-     cursor: pointer;
-     transition: transform 0.2s ease, box-shadow 0.2s ease;
-     animation: pulse-wa 2.4s ease-in-out infinite;
-   }
-   .float-wa:hover {
-     transform: scale(1.1);
-     box-shadow: 0 12px 36px rgba(37, 211, 102, 0.6);
-     animation: none;
-   }
-   .float-wa svg { width: 28px; height: 28px; }
-
-   @keyframes pulse-wa {
-     0%, 100% { box-shadow: 0 8px 28px rgba(37, 211, 102, 0.45); }
-     50% { box-shadow: 0 8px 40px rgba(37, 211, 102, 0.75), 0 0 0 10px rgba(37, 211, 102, 0.1); }
-   }
-
-   /* ── FOOTER ── */
-   footer {
-     border-top: 1px solid var(--border);
-     padding: 1.7rem 0;
-     color: var(--muted);
-     text-align: center;
-     font-size: 0.92rem;
-   }
-
-   /* ── REVEAL ANIMATIONS ── */
-   .reveal {
-     opacity: 0;
-     transform: translateY(24px);
-     transition: opacity 0.7s ease, transform 0.7s ease;
-     will-change: opacity, transform;
-   }
-   .reveal.show { opacity: 1; transform: translateY(0); }
-
-   /* ── RESPONSIVE ── */
-   @media (max-width: 960px) {
-     .hero-grid { grid-template-columns: 1fr; }
-     .grid-3 { grid-template-columns: 1fr; }
-     .stats-grid { grid-template-columns: repeat(3, 1fr); }
-     nav ul { gap: 0.8rem; font-size: 0.92rem; }
-   }
-
-   @media (max-width: 680px) {
-     .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-   }
-
-   @media (max-width: 560px) {
-     section { padding: 4rem 0; }
-
-     .nav {
-       min-height: 70px;
-       flex-wrap: nowrap;
-       padding: 0 0;
-     }
-
-     nav { display: none; }
-     .hamburger { display: flex; }
-
-     .float-wa { width: 56px; height: 56px; bottom: 1.5rem; right: 1.5rem; }
-     .float-wa svg { width: 26px; height: 26px; }
-   }
- </style>
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns:1fr; }
+      .grid-3 { grid-template-columns:1fr; }
+      nav ul { gap:.75rem; }
+    }
+    @media (max-width: 620px) {
+      section { padding:4rem 0; }
+      nav { display:none; }
+      .hamburger { display:flex; }
+      .mobile-nav { display:block; }
+      .hero-actions .btn { width:100%; }
+      .float-wa { width:56px; height:56px; bottom:1.25rem; right:1.25rem; }
+    }
+  </style>
 </head>
 <body>
+  <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20Digital." class="float-wa" aria-label="Abrir WhatsApp do Vigia Digital" target="_blank" rel="noopener">
+    <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true"><path d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/><path d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/></svg>
+  </a>
 
- <!-- FLOATING WHATSAPP -->
- <a href="https://wa.me/5581995513006" class="float-wa" aria-label="Abrir WhatsApp do Vigia Digital" target="_blank" rel="noopener">
-   <svg viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-     <path d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/>
-     <path d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/>
-   </svg>
- </a>
+  <header>
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="Vigia Digital - Início">
+        <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/><ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/><circle cx="20" cy="20" r="2.8" fill="#e94560"/><circle cx="21.2" cy="18.8" r=".9" fill="white" opacity=".8"/><path d="M14 13.5Q20 9 26 13.5" stroke="#25d366" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".65"/></svg>
+        Vigia<span>Digital</span>
+      </a>
+      <nav aria-label="Navegação principal"><ul><li><a href="#como-funciona">Como funciona</a></li><li><a href="#analises">Análises</a></li><li><a href="#planos">Planos</a></li><li><a href="#seguranca">Segurança</a></li><li><a href="#faq">FAQ</a></li></ul></nav>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+    <div class="mobile-nav" id="mobileNav" aria-hidden="true"><a href="#como-funciona">Como funciona</a><a href="#analises">Análises</a><a href="#planos">Planos</a><a href="#seguranca">Segurança</a><a href="#faq">FAQ</a></div>
+  </header>
 
- <!-- HEADER -->
- <header>
-   <div class="container nav">
-     <a href="#top" class="logo" aria-label="Vigia Digital - Início">
-       <!-- LOGO VIGIA DIGITAL: escudo com olho e sinal de proteção -->
-       <svg class="logo-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-         <!-- Escudo base -->
-         <path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/>
-         <!-- Olho externo -->
-         <ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/>
-         <!-- Pupila -->
-         <circle cx="20" cy="20" r="2.8" fill="#e94560"/>
-         <!-- Brilho da pupila -->
-         <circle cx="21.2" cy="18.8" r="0.9" fill="white" opacity="0.8"/>
-         <!-- Sinal de radar superior -->
-         <path d="M14 13.5 Q20 9 26 13.5" stroke="#25d366" stroke-width="1.2" fill="none" stroke-linecap="round" opacity="0.6"/>
-       </svg>
-       Vigia<span>Digital</span>
-     </a>
-     <nav aria-label="Navegação principal">
-       <ul>
-         <li><a href="#como-funciona">Como funciona</a></li>
-         <li><a href="#analises">Análises</a></li>
-         <li><a href="#planos">Planos</a></li>
-         <li><a href="#depoimentos">Depoimentos</a></li>
-         <li><a href="#faq">FAQ</a></li>
-       </ul>
-     </nav>
-     <button class="hamburger" id="hamburgerBtn" aria-label="Abrir menu" aria-expanded="false">
-       <span></span><span></span><span></span>
-     </button>
-   </div>
-   <div class="mobile-nav" id="mobileNav" aria-hidden="true">
-     <a href="#como-funciona">Como funciona</a>
-     <a href="#analises">Análises</a>
-     <a href="#planos">Planos</a>
-     <a href="#depoimentos">Depoimentos</a>
-     <a href="#faq">FAQ</a>
-   </div>
- </header>
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="reveal">
+          <span class="eyebrow">🛡️ Análise educativa contra golpes</span>
+          <h1>Antes de pagar, clicar ou responder, mande para o Vigia.</h1>
+          <p>Receba uma análise de risco pelo WhatsApp sobre mensagens, links, prints e boletos suspeitos. Simples, rápido e com orientação prática.</p>
+          <div class="hero-actions">
+            <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20gr%C3%A1tis." class="btn btn-whatsapp" target="_blank" rel="noopener">Testar grátis no WhatsApp</a>
+            <a href="#seguranca" class="btn btn-outline">Ver limitações e segurança</a>
+          </div>
+          <div class="trust-row" aria-label="Avisos importantes"><span class="trust-pill">Sem promessa de acerto absoluto</span><span class="trust-pill">Confirme sempre em canal oficial</span><span class="trust-pill">LGPD e privacidade desde o início</span></div>
+        </div>
 
- <main id="top">
-   <!-- HERO -->
-   <section class="hero">
-     <div class="container hero-grid">
-       <div class="reveal">
-         <span class="eyebrow">🛡️ Proteção digital do jeito simples</span>
-         <h1>Antes de pagar ou clicar, manda aqui.</h1>
-         <p>A gente analisa o risco em segundos, direto no seu WhatsApp.</p>
-         <a href="https://wa.me/5581995513006" class="btn btn-whatsapp" aria-label="Testar Vigia Digital grátis agora" target="_blank" rel="noopener">
-           <svg class="whatsapp-icon" viewBox="0 0 32 32" aria-hidden="true">
-             <path fill="currentColor" d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/>
-             <path fill="currentColor" d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/>
-           </svg>
-           Testar grátis agora
-         </a>
-       </div>
+        <article class="analysis-card reveal" aria-label="Exemplo de análise do Vigia Digital">
+          <div class="analysis-head"><span>WhatsApp • Vigia Digital</span><span>Exemplo</span></div>
+          <div class="analysis-body">
+            <div class="risk-badge"><span>🔴 RISCO ALTO — <span id="risk-score" data-target="78">0%</span></span><strong>Possível tentativa de golpe</strong></div>
+            <ul class="list"><li>Link não aparenta pertencer ao canal oficial.</li><li>Mensagem usa urgência para induzir pagamento imediato.</li><li>Pede dados pessoais fora de ambiente seguro.</li></ul>
+            <div class="recommendation"><strong>Recomendação:</strong> não clique e não pague agora. Confirme com o telefone ou app oficial da empresa.</div>
+            <div class="legal-note"><strong>Aviso:</strong> a análise é probabilística e educativa. Ela não substitui contato com banco, empresa, autoridade policial ou profissional especializado.</div>
+          </div>
+        </article>
+      </div>
+    </section>
 
-       <article class="analysis-card reveal" aria-label="Exemplo de análise do Vigia Digital">
-         <div class="analysis-head">
-           <span>WhatsApp • Vigia Digital</span>
-           <span>Agora</span>
-         </div>
-         <div class="analysis-body">
-           <div class="risk-badge">
-             <span>🔴 RISCO ALTO — <span id="risk-score" data-target="78">0%</span></span>
-             <strong>Possível tentativa de golpe</strong>
-           </div>
-           <ul class="list">
-             <li>Tem link estranho levando para site que não parece oficial.</li>
-             <li>Mensagem com pressa para você pagar agora.</li>
-             <li>Pediram dados pessoais fora de um canal seguro.</li>
-           </ul>
-           <div class="recommendation">
-             <strong>Recomendação:</strong> não clique e não pague agora. Confirme antes com o telefone oficial da empresa.
-           </div>
-         </div>
-       </article>
-     </div>
-   </section>
+    <div class="notice-strip"><div class="container"><p><strong>Importante:</strong> o Vigia Digital não garante ausência de fraude. Ele ajuda a identificar sinais de risco e orientar uma verificação segura.</p></div></div>
 
-   <!-- STATS BAR -->
-   <div class="stats-bar">
-     <div class="container stats-grid">
-       <div class="stat-item reveal">
-         <span class="stat-number" data-target="47000" id="stat-analyses">0</span>
-         <span class="stat-label">análises realizadas</span>
-       </div>
-       <div class="stat-item reveal">
-         <span class="stat-number" data-target="8" data-suffix="s" id="stat-time">0s</span>
-         <span class="stat-label">tempo médio de resposta</span>
-       </div>
-       <div class="stat-item reveal">
-         <span class="stat-number" data-target="97" data-suffix="%" id="stat-satisfaction">0%</span>
-         <span class="stat-label">de satisfação dos usuários</span>
-       </div>
-     </div>
-   </div>
+    <section id="como-funciona">
+      <div class="container">
+        <h2 class="section-title reveal">Como funciona</h2>
+        <div class="grid-3">
+          <article class="card reveal"><div class="step-num">1</div><h3>Você recebe algo suspeito</h3><p>Mensagem, boleto, link, print ou comprovante que parece estranho.</p></article>
+          <article class="card reveal"><div class="step-num">2</div><h3>Encaminha pelo WhatsApp</h3><p>Você envia ao Vigia como faria com alguém de confiança.</p></article>
+          <article class="card reveal"><div class="step-num">3</div><h3>Recebe orientação prática</h3><p>O Vigia indica sinais de risco, próximos passos e canais a conferir.</p></article>
+        </div>
+      </div>
+    </section>
 
-   <!-- COMO FUNCIONA -->
-   <section id="como-funciona">
-     <div class="container">
-       <h2 class="section-title reveal">Como funciona</h2>
-       <div class="grid-3">
-         <article class="card reveal">
-           <div class="step-num">1</div>
-           <h3>Você recebe algo suspeito</h3>
-           <p>Chega uma mensagem, um boleto ou um print que parece estranho.</p>
-         </article>
-         <article class="card reveal">
-           <div class="step-num">2</div>
-           <h3>Encaminha para o Vigia</h3>
-           <p>Você encaminha no WhatsApp, igual faria com um amigo.</p>
-         </article>
-         <article class="card reveal">
-           <div class="step-num">3</div>
-           <h3>Recebe análise em segundos</h3>
-           <p>Em poucos segundos, você recebe o risco e o que fazer.</p>
-         </article>
-       </div>
-     </div>
-   </section>
+    <section id="analises">
+      <div class="container">
+        <h2 class="section-title reveal">O que o Vigia pode analisar</h2>
+        <p class="section-subtitle reveal">A análise considera padrões comuns de golpe, linguagem de urgência, inconsistências, links suspeitos e sinais visuais enviados pelo usuário.</p>
+        <div class="grid-3">
+          <article class="card reveal"><h3>💬 WhatsApp e SMS</h3><p>Mensagens com links, pedidos de Pix, falso suporte, falsa central ou cobrança urgente.</p></article>
+          <article class="card reveal"><h3>📄 Boletos e cobranças</h3><p>Verificação educativa de sinais de boleto falso, favorecido estranho e urgência de pagamento.</p></article>
+          <article class="card reveal"><h3>🖼️ Prints e comprovantes</h3><p>Leitura de prints para apontar inconsistências e orientar checagens seguras.</p></article>
+        </div>
+      </div>
+    </section>
 
-   <!-- O QUE ANALISAMOS -->
-   <section id="analises">
-     <div class="container">
-       <h2 class="section-title reveal">O que analisamos</h2>
-       <div class="grid-3">
-         <article class="card reveal">
-           <h3>💬 Mensagens de WhatsApp e SMS</h3>
-           <p>Vemos palavras suspeitas, links estranhos e pedidos fora do normal.</p>
-         </article>
-         <article class="card reveal">
-           <h3>📄 Boletos bancários</h3>
-           <p>Checamos sinais de boleto falso antes de você pagar.</p>
-         </article>
-         <article class="card reveal">
-           <h3>🖼️ Prints de telas suspeitas</h3>
-           <p>Analisamos a imagem para achar sinais de golpe.</p>
-         </article>
-       </div>
-     </div>
-   </section>
+    <section id="planos" class="plans">
+      <div class="container">
+        <h2 class="section-title reveal">Planos simples</h2>
+        <div class="grid-3">
+          <article class="card plan reveal"><h3>Gratuito</h3><p class="price">R$ 0</p><small>Para testar</small><ul class="plan-features"><li><span class="check">✓</span> 3 análises por mês</li><li><span class="check">✓</span> Mensagens e links</li><li><span class="check">✓</span> Orientação básica</li></ul><a class="btn btn-outline" href="https://wa.me/5581995513006?text=Quero%20come%C3%A7ar%20gr%C3%A1tis" target="_blank" rel="noopener">Começar grátis</a></article>
+          <article class="card plan reveal"><h3>Essencial</h3><p class="price">R$ 14,90<span style="font-size:1rem;font-family:Inter">/mês</span></p><small>Para uso individual</small><ul class="plan-features"><li><span class="check">✓</span> Análises ilimitadas*</li><li><span class="check">✓</span> Boletos, prints e mensagens</li><li><span class="check">✓</span> Histórico básico</li><li><span class="check">✓</span> Suporte prioritário</li></ul><a class="btn btn-whatsapp" href="https://wa.me/5581995513006?text=Quero%20assinar%20o%20plano%20Essencial" target="_blank" rel="noopener">Assinar agora</a></article>
+          <article class="card plan recommended reveal"><span class="badge-recom">⭐ Recomendado</span><h3>Família</h3><p class="price">R$ 24,90<span style="font-size:1rem;font-family:Inter">/mês</span></p><small>Para proteger familiares</small><ul class="plan-features"><li><span class="check">✓</span> Até 4 números</li><li><span class="check">✓</span> Análises ilimitadas*</li><li><span class="check">✓</span> Todos os tipos de análise</li><li><span class="check">✓</span> Orientação para familiares</li></ul><a class="btn btn-whatsapp" href="https://wa.me/5581995513006?text=Quero%20assinar%20o%20plano%20Fam%C3%ADlia" target="_blank" rel="noopener">Assinar agora</a></article>
+        </div>
+        <p class="section-subtitle" style="margin-top:1rem;font-size:.86rem">*Uso sujeito a política de uso justo, disponibilidade técnica e aos Termos de Uso.</p>
+      </div>
+    </section>
 
-   <!-- PLANOS -->
-   <section id="planos">
-     <div class="container">
-       <h2 class="section-title reveal">Planos</h2>
-       <div class="grid-3">
+    <section id="boas-vindas">
+      <div class="container">
+        <h2 class="section-title reveal">Veja como é simples</h2>
+        <p class="section-subtitle reveal">Uma experiência direta dentro do WhatsApp.</p>
+        <div class="wa-mock reveal">
+          <div class="wa-head"><div class="avatar"><svg viewBox="0 0 40 40" fill="none" style="width:28px;height:28px"><path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/><ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/><circle cx="20" cy="20" r="2.8" fill="#e94560"/></svg></div><div><strong style="font-family:Sora">Vigia Digital</strong><div style="font-size:.75rem;color:#25d366">● online</div></div></div>
+          <div class="wa-body"><div class="bubble-user">Olá! Quero testar o Vigia grátis.<div class="time">09:14 ✓✓</div></div><div style="display:flex;align-items:flex-end;gap:.5rem"><div class="avatar" style="width:28px;height:28px;border-width:1.5px"></div><div class="bubble-bot">👋 Olá! Bem-vindo ao <strong>Vigia Digital</strong>.<br><br>Envie uma mensagem, link, boleto ou print suspeito. Vou apontar sinais de risco e orientar o que conferir antes de clicar, pagar ou responder.<br><br><strong>Aviso:</strong> minha análise é educativa e não substitui confirmação em canal oficial.<div class="time">09:14 ✓✓</div></div></div></div>
+          <div class="wa-footer"><div class="wa-input">Escreva uma mensagem...</div><div class="send"><svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;margin-left:2px"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg></div></div>
+        </div>
+      </div>
+    </section>
 
-         <article class="card plan reveal">
-           <h3>Gratuito</h3>
-           <p class="price">R$ 0</p>
-           <small>Para experimentar</small>
-           <ul class="plan-features">
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> 3 análises por mês</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Análise de mensagens</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Resposta em segundos</li>
-           </ul>
-           <a href="https://wa.me/5581995513006" class="btn btn-outline" target="_blank" rel="noopener">Começar grátis</a>
-         </article>
+    <section id="seguranca">
+      <div class="container">
+        <h2 class="section-title reveal">Segurança, privacidade e limites</h2>
+        <div class="grid-3">
+          <article class="card reveal"><h3>🔐 Dados mínimos</h3><p>Coletamos apenas o necessário para analisar a solicitação, operar o serviço, prevenir abuso e cumprir obrigações legais.</p></article>
+          <article class="card reveal"><h3>⚠️ Não é garantia absoluta</h3><p>Golpes mudam rapidamente. A análise é de apoio educativo e não substitui bancos, empresas, autoridades ou profissionais especializados.</p></article>
+          <article class="card reveal"><h3>🧹 Retenção limitada</h3><p>Defina prazo de retenção curto para mensagens e anexos. O ideal é apagar conteúdos sensíveis assim que não forem mais necessários.</p></article>
+        </div>
+      </div>
+    </section>
 
-         <article class="card plan reveal">
-           <h3>Essencial</h3>
-           <p class="price">R$ 14,90<small style="font-size:1rem; font-family:Inter">/mês</small></p>
-           <small>Para uso individual</small>
-           <ul class="plan-features">
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Análises ilimitadas</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Boletos e prints</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Histórico de análises</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Suporte prioritário</li>
-           </ul>
-           <a href="https://wa.me/5581995513006" class="btn btn-whatsapp" target="_blank" rel="noopener">
-             <svg class="whatsapp-icon" viewBox="0 0 32 32"><path fill="currentColor" d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/><path fill="currentColor" d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/></svg>
-             Assinar agora
-           </a>
-         </article>
+    <section id="faq">
+      <div class="container">
+        <h2 class="section-title reveal">Perguntas frequentes</h2>
+        <div class="faq-list reveal">
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">É seguro enviar mensagens ao Vigia?<span class="faq-icon">+</span></button><div class="faq-answer">O serviço deve operar com dados mínimos, acesso restrito e retenção limitada. Evite enviar senhas, tokens, documentos completos ou informações que não sejam necessárias para análise.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">O Vigia pode errar?<span class="faq-icon">+</span></button><div class="faq-answer">Sim. Nenhuma análise automatizada é infalível. O Vigia indica sinais de risco e recomenda checagens, mas a decisão final deve ser tomada com confirmação em canais oficiais.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">Como cancelar?<span class="faq-icon">+</span></button><div class="faq-answer">Sem fidelidade. O cancelamento pode ser solicitado pelo WhatsApp ou por canal de suporte informado nos Termos de Uso.</div></div>
+          <div class="faq-item"><button class="faq-question" aria-expanded="false">Vocês substituem banco ou polícia?<span class="faq-icon">+</span></button><div class="faq-answer">Não. Em caso de perda financeira, ameaça, roubo de dados ou crime, procure banco, operadora, autoridade policial e canais oficiais de atendimento.</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
 
-         <article class="card plan recommended reveal">
-           <span class="badge-recom">⭐ Recomendado</span>
-           <h3>Família</h3>
-           <p class="price">R$ 24,90<small style="font-size:1rem; font-family:Inter">/mês</small></p>
-           <small>Para toda a família</small>
-           <ul class="plan-features">
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Até 4 números</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Análises ilimitadas</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Todos os tipos de análise</li>
-             <li><span class="check"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span> Suporte VIP 24h</li>
-           </ul>
-           <a href="https://wa.me/5581995513006" class="btn btn-whatsapp" target="_blank" rel="noopener">
-             <svg class="whatsapp-icon" viewBox="0 0 32 32"><path fill="currentColor" d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/><path fill="currentColor" d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/></svg>
-             Assinar agora
-           </a>
-         </article>
+  <footer>
+    <div class="container">
+      <div class="footer-links"><button data-modal="termsDialog">Termos de Uso</button><button data-modal="privacyDialog">Política de Privacidade</button><a href="mailto:contato@vigiadigital.com.br">Contato</a></div>
+      <p>Análise educativa e probabilística. Não substitui orientação profissional, atendimento bancário, canal oficial ou autoridade competente. © 2026 Vigia Digital</p>
+    </div>
+  </footer>
 
-       </div>
-     </div>
-   </section>
+  <dialog id="termsDialog">
+    <div class="modal-head"><h2>Termos de Uso — resumo essencial</h2><button class="close-modal">Fechar</button></div>
+    <div class="modal-body">
+      <p>Ao usar o Vigia Digital, o usuário declara compreender que o serviço oferece análise educativa, probabilística e não conclusiva de sinais de risco em mensagens, links, boletos, prints e conteúdos semelhantes.</p>
+      <h3>1. Natureza do serviço</h3><p>O Vigia Digital não garante que uma mensagem seja ou não golpe. O serviço auxilia o usuário a identificar sinais suspeitos e recomenda confirmar informações nos canais oficiais das empresas, bancos ou pessoas envolvidas.</p>
+      <h3>2. Responsabilidade do usuário</h3><p>O usuário é responsável por suas decisões de clicar, pagar, transferir, informar dados ou responder mensagens. O usuário não deve enviar senhas, tokens, códigos de autenticação, documentos completos ou dados excessivos.</p>
+      <h3>3. Limitação de responsabilidade</h3><p>Na extensão permitida pela legislação brasileira, o Vigia Digital não se responsabiliza por perdas decorrentes de decisões tomadas pelo usuário sem verificação em canais oficiais, por indisponibilidade técnica, por informações incompletas enviadas para análise ou por golpes novos não identificáveis por padrões conhecidos.</p>
+      <h3>4. Planos e cancelamento</h3><p>Planos pagos podem ser cancelados pelo canal de suporte. Valores, limites e funcionalidades poderão ser alterados mediante aviso prévio, respeitados direitos já adquiridos.</p>
+      <h3>5. Uso proibido</h3><p>É proibido usar o serviço para fraude, engenharia social, invasão, perseguição, coleta indevida de dados ou qualquer finalidade ilícita.</p>
+    </div>
+  </dialog>
 
-   <!-- BOAS-VINDAS WHATSAPP -->
-   <section id="boas-vindas" style="padding: 3rem 0 2rem;">
-     <div class="container">
-       <h2 class="section-title reveal">Veja como é simples</h2>
-       <p style="text-align:center; color:var(--muted); margin-top:-1.2rem; margin-bottom:2rem;" class="reveal">
-         Assim que você manda sua primeira mensagem, o Vigia já se apresenta:
-       </p>
-       <!-- Simulação de conversa WhatsApp -->
-       <div class="reveal" style="max-width:440px; margin:0 auto; background:linear-gradient(160deg,#0b1f2e,#0e2538); border:1px solid var(--border); border-radius:20px; overflow:hidden; box-shadow:var(--shadow);">
-         <!-- Cabeçalho do WhatsApp -->
-         <div style="background:#0a1929; padding:0.8rem 1rem; display:flex; align-items:center; gap:0.8rem; border-bottom:1px solid var(--border);">
-           <!-- Avatar com logo SVG -->
-           <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border:2px solid #25d366;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-             <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:28px;height:28px;">
-               <path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2"/>
-               <ellipse cx="20" cy="20" rx="8" ry="5.5" fill="none" stroke="#25d366" stroke-width="1.8"/>
-               <circle cx="20" cy="20" r="2.8" fill="#e94560"/>
-               <circle cx="21.2" cy="18.8" r="0.9" fill="white" opacity="0.8"/>
-             </svg>
-           </div>
-           <div>
-             <div style="font-family:'Sora',sans-serif;font-weight:700;font-size:0.95rem;">Vigia Digital</div>
-             <div style="font-size:0.75rem;color:#25d366;">● online</div>
-           </div>
-         </div>
-         <!-- Mensagens -->
-         <div style="padding:1.2rem; display:grid; gap:0.9rem; background:url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2260%22 height=%2260%22><rect width=%2260%22 height=%2260%22 fill=%22%230b1f2e%22/></svg>');">
-           <!-- Mensagem do usuário -->
-           <div style="display:flex;justify-content:flex-end;">
-             <div style="background:#005c4b;color:#e9edef;padding:0.6rem 0.9rem;border-radius:12px 12px 2px 12px;max-width:80%;font-size:0.88rem;line-height:1.5;">
-               Olá! Quero testar o Vigia grátis.
-               <div style="font-size:0.7rem;color:#8eab9e;text-align:right;margin-top:2px;">09:14 ✓✓</div>
-             </div>
-           </div>
-           <!-- Resposta do bot -->
-           <div style="display:flex;align-items:flex-end;gap:0.5rem;">
-             <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0d1b2a,#1a3a5c);border:1.5px solid #25d366;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-               <svg viewBox="0 0 40 40" fill="none" style="width:18px;height:18px;">
-                 <path d="M20 3L5 9v10c0 8.5 6.4 16.4 15 18.3C28.6 35.4 35 27.5 35 19V9L20 3z" fill="#0d1b2a" stroke="#e94560" stroke-width="2.5"/>
-                 <circle cx="20" cy="20" r="2.8" fill="#e94560"/>
-               </svg>
-             </div>
-             <div style="background:#1f2c34;color:#e9edef;padding:0.75rem 0.9rem;border-radius:2px 12px 12px 12px;max-width:88%;font-size:0.85rem;line-height:1.6;">
-               👋 Olá! Bem-vindo ao *Vigia Digital*.<br><br>
-               Sou seu assistente de proteção contra golpes. Estou aqui 24h para analisar qualquer coisa suspeita que você receber.<br><br>
-               📲 *Como usar:*<br>
-               • Encaminhe a mensagem suspeita<br>
-               • Mande o código do boleto<br>
-               • Envie um print de SMS ou WhatsApp<br><br>
-               Você tem *3 análises gratuitas* este mês.<br><br>
-               Manda o que quiser verificar 👇
-               <div style="font-size:0.7rem;color:#8eab9e;text-align:right;margin-top:4px;">09:14 ✓✓</div>
-             </div>
-           </div>
-         </div>
-         <!-- Rodapé -->
-         <div style="padding:0.7rem 1rem;background:#0a1929;border-top:1px solid var(--border);display:flex;align-items:center;gap:0.5rem;">
-           <div style="flex:1;background:#2a3942;border-radius:20px;padding:0.5rem 1rem;color:#8eab9e;font-size:0.82rem;">Escreva uma mensagem...</div>
-           <div style="width:36px;height:36px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;">
-             <svg viewBox="0 0 24 24" fill="white" style="width:18px;height:18px;margin-left:2px;"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-           </div>
-         </div>
-       </div>
+  <dialog id="privacyDialog">
+    <div class="modal-head"><h2>Política de Privacidade — resumo essencial</h2><button class="close-modal">Fechar</button></div>
+    <div class="modal-body">
+      <p>Esta política resume como o Vigia Digital deve tratar dados pessoais em conformidade com a LGPD.</p>
+      <h3>1. Dados tratados</h3><p>Podem ser tratados número de WhatsApp, nome informado, mensagens enviadas, arquivos anexados, metadados técnicos, histórico de atendimento, plano contratado e dados necessários para pagamento.</p>
+      <h3>2. Finalidades</h3><ul><li>prestar a análise solicitada;</li><li>prevenir abuso e fraude;</li><li>prestar suporte;</li><li>processar pagamentos;</li><li>cumprir obrigações legais;</li><li>melhorar a segurança do serviço.</li></ul>
+      <h3>3. Base legal</h3><p>As bases podem incluir execução de contrato, legítimo interesse, consentimento quando aplicável e cumprimento de obrigação legal.</p>
+      <h3>4. Retenção e exclusão</h3><p>Mensagens e anexos devem ser mantidos pelo menor tempo necessário. O usuário poderá solicitar acesso, correção ou exclusão, ressalvadas hipóteses legais de retenção.</p>
+      <h3>5. Compartilhamento</h3><p>Dados podem ser compartilhados com provedores técnicos indispensáveis, como WhatsApp, hospedagem, inteligência artificial, meios de pagamento e suporte, sempre observando medidas razoáveis de segurança.</p>
+      <h3>6. Segurança</h3><p>Devem ser adotadas medidas técnicas e administrativas compatíveis com o porte do serviço, como controle de acesso, autenticação forte, registros de operação e exclusão segura de dados.</p>
+    </div>
+  </dialog>
 
-       <!-- CTA abaixo do mockup -->
-       <div style="text-align:center;margin-top:1.8rem;" class="reveal">
-         <a href="https://wa.me/5581995513006?text=Ol%C3%A1%21%20Quero%20testar%20o%20Vigia%20gr%C3%A1tis." class="btn btn-whatsapp" target="_blank" rel="noopener" style="font-size:1.05rem;padding:1rem 2rem;">
-           <svg class="whatsapp-icon" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M19.11 17.26c-.29-.14-1.72-.85-1.99-.95-.26-.1-.45-.14-.64.15-.19.29-.74.95-.91 1.14-.17.19-.34.21-.63.07-.29-.14-1.2-.44-2.29-1.4-.84-.75-1.42-1.67-1.58-1.95-.17-.29-.02-.44.12-.58.13-.13.29-.34.43-.5.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-.99.96-.99 2.34 0 1.38 1.01 2.71 1.15 2.9.14.19 1.97 3 4.78 4.2.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.33z"/><path fill="currentColor" d="M16.03 3C8.85 3 3 8.85 3 16.03c0 2.29.6 4.52 1.74 6.49L3 29l6.65-1.69a13 13 0 0 0 6.38 1.67h.01c7.18 0 13.03-5.85 13.03-13.03C29.06 8.84 23.21 3 16.03 3zm0 23.82h-.01a10.8 10.8 0 0 1-5.51-1.51l-.39-.23-3.95 1 1.05-3.86-.25-.4a10.8 10.8 0 0 1-1.66-5.79c0-5.98 4.86-10.84 10.84-10.84 2.9 0 5.62 1.13 7.67 3.18a10.78 10.78 0 0 1 3.17 7.66c0 5.98-4.86 10.84-10.83 10.84z"/></svg>
-           Quero ver isso funcionando
-         </a>
-       </div>
-     </div>
-   </section>
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileNav = document.getElementById('mobileNav');
+    hamburgerBtn?.addEventListener('click', () => {
+      const isOpen = mobileNav.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open', isOpen);
+      hamburgerBtn.setAttribute('aria-expanded', String(isOpen));
+      mobileNav.setAttribute('aria-hidden', String(!isOpen));
+    });
+    mobileNav?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      mobileNav.classList.remove('open');
+      hamburgerBtn.classList.remove('open');
+      hamburgerBtn.setAttribute('aria-expanded','false');
+      mobileNav.setAttribute('aria-hidden','true');
+    }));
 
-   <!-- DEPOIMENTOS -->
-   <section id="depoimentos">
-     <div class="container">
-       <h2 class="section-title reveal">O que dizem nossos usuários</h2>
-       <div class="grid-3">
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Eu quase paguei um boleto falso. Mandei pro Vigia e em segundos ele avisou que era perigoso. Me salvou de perder R$ 1.200."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#e94560,#c73652);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">C</div>
-             <strong style="font-size:0.9rem;">Carla M., Recife – PE</strong>
-           </div>
-         </article>
+    const revealObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold:.12, rootMargin:'0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Meu pai recebeu uma mensagem de banco falsa. Encaminhamos pro Vigia e já veio a orientação pra não clicar. Ele não cai mais em golpe."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#1a73e8,#0d5cbf);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">R</div>
-             <strong style="font-size:0.9rem;">Rodrigo S., Campinas – SP</strong>
-           </div>
-         </article>
+    function animateCounter(el, target, suffix = '', duration = 1200) {
+      if (!el || el.dataset.animated === 'true') return;
+      const start = performance.now();
+      const tick = now => {
+        const progress = Math.min((now - start) / duration, 1);
+        const value = Math.round(progress * target);
+        el.textContent = value + suffix;
+        if (progress < 1) requestAnimationFrame(tick); else el.dataset.animated = 'true';
+      };
+      requestAnimationFrame(tick);
+    }
+    const scoreEl = document.getElementById('risk-score');
+    const mockupEl = document.querySelector('.analysis-card');
+    if (mockupEl && scoreEl) {
+      new IntersectionObserver((entries, obs) => entries.forEach(entry => {
+        if (entry.isIntersecting) { animateCounter(scoreEl, Number(scoreEl.dataset.target) || 78, '%'); obs.unobserve(entry.target); }
+      }), { threshold:.4 }).observe(mockupEl);
+    }
 
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Assino o plano família. Coloquei minha mãe e minha filha no mesmo plano. Agora qualquer coisa suspeita a gente manda pro Vigia antes de fazer qualquer coisa."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#25d366,#1aab52);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;color:#05220f;">M</div>
-             <strong style="font-size:0.9rem;">Márcia O., Fortaleza – CE</strong>
-           </div>
-         </article>
+    document.querySelectorAll('.faq-question').forEach(btn => btn.addEventListener('click', () => {
+      const item = btn.closest('.faq-item');
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => { i.classList.remove('open'); i.querySelector('.faq-question').setAttribute('aria-expanded','false'); });
+      if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded','true'); }
+    }));
 
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Recebi um SMS do 'Correios' pedindo taxa de liberação de encomenda. O Vigia identificou como golpe em 9 segundos. Mostrei pra todo mundo no grupo da família."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#bd93f9,#9b59b6);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;">J</div>
-             <strong style="font-size:0.9rem;">Jonas T., Salvador – BA</strong>
-           </div>
-         </article>
-
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Sou aposentada e tenho muito medo de golpe. Minha neta me colocou no Vigia. Agora mando tudo pra cá antes de responder qualquer mensagem estranha."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#f5a623,#e08c0a);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;color:#1a0a00;">D</div>
-             <strong style="font-size:0.9rem;">Dona Neuza F., Recife – PE</strong>
-           </div>
-         </article>
-
-         <article class="card reveal" style="display:grid;gap:0.7rem;">
-           <div style="display:flex;gap:0.3rem;color:#f5a623;font-size:1rem;">★★★★★</div>
-           <p style="font-size:0.95rem;color:var(--muted);line-height:1.6;">"Trabalho com vendas online e recebo prints de comprovantes de Pix falsos. O Vigia me ajuda a identificar antes de liberar o produto. Essencial pra mim."</p>
-           <div style="display:flex;align-items:center;gap:0.6rem;margin-top:0.3rem;">
-             <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#50fa7b,#27c754);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;flex-shrink:0;color:#05220f;">F</div>
-             <strong style="font-size:0.9rem;">Felipe A., João Pessoa – PB</strong>
-           </div>
-         </article>
-       </div>
-     </div>
-   </section>
-
-   <!-- FAQ -->
-   <section id="faq">
-     <div class="container">
-       <h2 class="section-title reveal">Perguntas frequentes</h2>
-       <div class="faq-list reveal">
-
-         <div class="faq-item">
-           <button class="faq-question" aria-expanded="false">
-             É seguro enviar minha mensagem para o Vigia Digital?
-             <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span>
-           </button>
-           <div class="faq-answer">Sim. Suas mensagens são analisadas de forma automatizada e não são armazenadas permanentemente. Não compartilhamos seus dados com terceiros.</div>
-         </div>
-
-         <div class="faq-item">
-           <button class="faq-question" aria-expanded="false">
-             Como funciona o plano gratuito?
-             <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span>
-           </button>
-           <div class="faq-answer">No plano gratuito você pode fazer até 3 análises por mês, sem precisar cadastrar cartão. Basta entrar em contato pelo WhatsApp e enviar o conteúdo suspeito.</div>
-         </div>
-
-         <div class="faq-item">
-           <button class="faq-question" aria-expanded="false">
-             Quanto tempo leva para receber a análise?
-             <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span>
-           </button>
-           <div class="faq-answer">Em média 8 segundos. Em casos mais complexos, como análise de imagens ou boletos, pode levar até 20 segundos.</div>
-         </div>
-
-         <div class="faq-item">
-           <button class="faq-question" aria-expanded="false">
-             O Vigia Digital pode errar na análise?
-             <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span>
-           </button>
-           <div class="faq-answer">Nossa análise tem alta precisão, mas nenhum sistema é 100% infalível. O Vigia Digital é uma ferramenta de apoio educativo — em caso de dúvida, confirme sempre com o canal oficial da empresa ou pessoa envolvida.</div>
-         </div>
-
-         <div class="faq-item">
-           <button class="faq-question" aria-expanded="false">
-             Posso cancelar meu plano quando quiser?
-             <span class="faq-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="6" y1="2" x2="6" y2="10"/><line x1="2" y1="6" x2="10" y2="6"/></svg></span>
-           </button>
-           <div class="faq-answer">Sim, sem fidelidade e sem burocracia. Basta enviar uma mensagem para o nosso WhatsApp solicitando o cancelamento a qualquer momento.</div>
-         </div>
-
-       </div>
-     </div>
-   </section>
- </main>
-
- <!-- FOOTER -->
- <footer>
-   <div class="container">
-     Análise educativa. Não substitui orientação profissional. &nbsp;·&nbsp; © 2025 Vigia Digital
-   </div>
- </footer>
-
- <script>
-   // ── HAMBURGUER MENU ──
-   const hamburgerBtn = document.getElementById('hamburgerBtn');
-   const mobileNav = document.getElementById('mobileNav');
-
-   hamburgerBtn.addEventListener('click', () => {
-     const isOpen = mobileNav.classList.toggle('open');
-     hamburgerBtn.classList.toggle('open', isOpen);
-     hamburgerBtn.setAttribute('aria-expanded', isOpen);
-     mobileNav.setAttribute('aria-hidden', !isOpen);
-     mobileNav.style.display = isOpen ? 'flex' : '';
-   });
-
-   mobileNav.querySelectorAll('a').forEach(link => {
-     link.addEventListener('click', () => {
-       mobileNav.classList.remove('open');
-       hamburgerBtn.classList.remove('open');
-       hamburgerBtn.setAttribute('aria-expanded', false);
-       mobileNav.setAttribute('aria-hidden', true);
-     });
-   });
-
-   // ── REVEAL ANIMATIONS ──
-   const reveals = document.querySelectorAll('.reveal');
-   const revealObserver = new IntersectionObserver((entries) => {
-     entries.forEach((entry) => {
-       if (entry.isIntersecting) {
-         entry.target.classList.add('show');
-         revealObserver.unobserve(entry.target);
-       }
-     });
-   }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-   reveals.forEach(el => revealObserver.observe(el));
-
-   // ── CONTADOR GENÉRICO ──
-   function animateCounter(el, target, suffix = '', duration = 1600) {
-     if (el.dataset.animated === 'true') return;
-     const frame = 16;
-     let current = 0;
-     const step = Math.max(1, Math.ceil((target / duration) * frame));
-     const timer = setInterval(() => {
-       current = Math.min(current + step, target);
-       el.textContent = (current >= 1000 ? (current / 1000).toFixed(1) + 'k' : current) + suffix;
-       if (current >= target) { clearInterval(timer); el.dataset.animated = 'true'; }
-     }, frame);
-   }
-
-   // Contador risk score
-   const scoreEl = document.getElementById('risk-score');
-   const mockupEl = document.querySelector('.analysis-card');
-   if (mockupEl && scoreEl) {
-     new IntersectionObserver((entries, obs) => {
-       entries.forEach(entry => {
-         if (entry.isIntersecting) {
-           animateCounter(scoreEl, Number(scoreEl.dataset.target) || 78, '%');
-           obs.unobserve(entry.target);
-         }
-       });
-     }, { threshold: 0.4 }).observe(mockupEl);
-   }
-
-   // Contadores stats bar
-   const statsMap = [
-     { id: 'stat-analyses', target: 47000, suffix: '' },
-     { id: 'stat-time',     target: 8,     suffix: 's' },
-     { id: 'stat-satisfaction', target: 97, suffix: '%' },
-   ];
-   statsMap.forEach(({ id, target, suffix }) => {
-     const el = document.getElementById(id);
-     if (!el) return;
-     new IntersectionObserver((entries, obs) => {
-       entries.forEach(entry => {
-         if (entry.isIntersecting) {
-           animateCounter(el, target, suffix);
-           obs.unobserve(entry.target);
-         }
-       });
-     }, { threshold: 0.4 }).observe(el);
-   });
-
-   // ── FAQ ACCORDION ──
-   document.querySelectorAll('.faq-question').forEach(btn => {
-     btn.addEventListener('click', () => {
-       const item = btn.closest('.faq-item');
-       const isOpen = item.classList.contains('open');
-       // Fecha todos
-       document.querySelectorAll('.faq-item.open').forEach(i => {
-         i.classList.remove('open');
-         i.querySelector('.faq-question').setAttribute('aria-expanded', false);
-       });
-       // Abre o clicado (se não estava aberto)
-       if (!isOpen) {
-         item.classList.add('open');
-         btn.setAttribute('aria-expanded', true);
-       }
-     });
-   });
-
-   // Mobile nav display init
-   if (window.innerWidth <= 560) {
-     mobileNav.style.display = 'none';
-   }
- </script>
+    document.querySelectorAll('[data-modal]').forEach(btn => btn.addEventListener('click', () => {
+      document.getElementById(btn.dataset.modal)?.showModal();
+    }));
+    document.querySelectorAll('dialog .close-modal').forEach(btn => btn.addEventListener('click', () => btn.closest('dialog').close()));
+    document.querySelectorAll('dialog').forEach(dialog => dialog.addEventListener('click', e => { if (e.target === dialog) dialog.close(); }));
+  </script>
 </body>
 </html>
